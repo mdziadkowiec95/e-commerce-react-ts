@@ -1,21 +1,25 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { INavCategory } from "./types";
+import React, { FunctionComponent } from 'react';
+import { Link } from 'react-router-dom';
+import { INavCategory } from './types';
 
 interface Props {
-  category: INavCategory;
+  category: INavCategory | undefined;
 }
 
-const NavCategoryDropdown = ({ category }: Props) =>
+const NavCategoryDropdown: FunctionComponent<Props> = ({ category }) =>
   category ? (
-    <div className="navbar-item has-dropdown is-hoverable">
+    <div
+      className="navbar-item has-dropdown is-hoverable"
+      data-testid="nav-category-dropdown"
+    >
       <Link className="navbar-link" to={`/products/${category.categoryTree}`}>
         {category.displayName}
       </Link>
 
-      <div className="navbar-dropdown">
-        {category.subcategories?.map((subcategory: any) => (
+      <div className="navbar-dropdown" data-testid="nav-subcategories-wrap">
+        {category.subcategories?.map((subcategory: INavCategory) => (
           <Link
+            key={subcategory.id}
             className="navbar-item"
             to={`/products/${subcategory.categoryTree}`}
           >

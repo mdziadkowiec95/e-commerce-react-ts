@@ -1,15 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './scss/app.scss';
 import Products from './views/Products';
 import axios from 'axios';
 import Navbar from './components/Navbar/Navbar';
+import { getCategoriesBegin } from './redux/UI/UI.actions';
+import { Dispatch } from 'redux';
+import { connect } from 'react-redux';
 
-function App() {
+interface AppProps {
+  UI: any;
+  getCategories: Function;
+}
+
+function App({ UI, getCategories }: AppProps) {
+  useEffect(() => {
+    getCategories();
+  }, [getCategories]);
+
   // Test server communication
-  axios.get('/api').then((res) => {
-    console.log('Welcome to your server :D', res.data.msg);
-  });
+  // axios.get('/api').then((res) => {
+  //   console.log('Welcome to your server :D', res.data.msg);
+  // });
 
   return (
     <div className="App">
@@ -34,4 +46,16 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state: any) => {
+  return {
+    UI: state.UI,
+  };
+};
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    getCategories: () => dispatch(getCategoriesBegin()),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

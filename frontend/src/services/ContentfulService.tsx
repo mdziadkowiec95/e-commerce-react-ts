@@ -1,4 +1,8 @@
-import { createClient, ContentfulClientApi, ContentfulCollection, Entry } from "contentful";
+import { createClient, ContentfulClientApi } from "contentful";
+import {
+  CategoriesCollection,
+  CategoryEntry,
+} from "../common/types/categories";
 import { getEnvironementVariable } from "../helpers/environment";
 
 const contentfulClient: ContentfulClientApi = createClient({
@@ -7,19 +11,40 @@ const contentfulClient: ContentfulClientApi = createClient({
   accessToken: getEnvironementVariable("REACT_APP_CONTENTFUL_ACCESS_TOKEN"),
 });
 
-type CategoryEntry = Entry<{
-    fieldName: string,
-    title: string
-}>;
-
-type CategoriesCollection = ContentfulCollection<CategoryEntry>;
+function mapPromise<T>(promise: Promise<any>, cb: Function): Promise<T> {
+  return new Promise((resolve, reject) => {
+    promise.then((res) => resolve(cb(res))).catch(reject);
+  });
+}
 
 export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
   return {
-    getCategories(): Promise<CategoriesCollection> {
-      return client.getEntries({
-        content_type: "category",
-      });
+    getCategories(): Promise<CategoryEntry[]> {
+      return mapPromise<CategoryEntry[]>(
+        client.getEntries({
+          content_type: "category",
+        }),
+        (res: CategoriesCollection) => {
+          return res.items.map((item: CategoryEntry) => {
+            const {
+              displayName,
+              categoryTree,
+              parentCategory,
+              categoryDescription,
+            } = item.fields;
+
+            return {
+              sys: { id: item.sys.id },
+              fields: {
+                displayName,
+                categoryTree,
+                categoryDescription,
+                parentCategory,
+              },
+            };
+          });
+        }
+      );
     },
 
     getProducts(parentCategory: string, subCategory: string): Promise<any> {
@@ -38,12 +63,12 @@ export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
       if (subCategory && parentCategory) {
         options = {
           "fields.category.sys.contentType.sys.id": "category",
-          "fields.category.fields.fieldName": query,
+          "fields.category.fields.categoryTree": query,
         };
       } else if (parentCategory && !subCategory) {
         options = {
           "fields.rootCategory.sys.contentType.sys.id": "category",
-          "fields.rootCategory.fields.fieldName": query,
+          "fields.rootCategory.fields.categoryTree": query,
         };
       }
 

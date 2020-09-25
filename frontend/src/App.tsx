@@ -5,20 +5,14 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import './App.css';
+import './scss/app.scss';
 import ContentfulService from './services/ContentfulService';
 import Products from './views/Products';
 import axios from 'axios';
+import Navbar from './components/Navbar/Navbar';
+
 
 function App() {
-  // Test contentful communication
-  ContentfulService.getCategories().then(res => {
-    res.items.forEach(el => {
-      console.log(el.fields.fieldName);
-    });
-    console.log(res);
-  });
-
   // Test server communication
   axios.get('/api').then(res => {
     console.log('Welcome to your server :D', res.data.msg);
@@ -26,7 +20,9 @@ function App() {
 
   return (
     <div className="App">
+      
       <Router>
+        <Navbar />
         <Switch>
           <Route exact path="/" component={()=>{ return <h1>Home</h1>}} />
           <Route exact path="/products/:rootCategory?/:subCategory?" component={Products} />

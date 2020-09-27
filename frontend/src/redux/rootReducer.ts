@@ -3,7 +3,9 @@ import { combineReducers } from 'redux';
 import uiReducer from './UI/UI.reducer';
 
 const rootReducer = combineReducers({
-  UI: uiReducer,
+	UI: uiReducer,
 });
+
+export type RootState = ReturnType<typeof rootReducer>
 
 export default rootReducer;

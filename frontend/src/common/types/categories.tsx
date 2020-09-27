@@ -1,11 +1,37 @@
-import { ContentfulCollection, Entry } from "contentful";
+import { Entry, EntryCollection } from 'contentful';
 
-export type CategoryEntry = Entry<{
-    title: string;
-    categoryTree: string,
+export interface CategoryBase {
+  title: string;
+  categoryTree: string;
+  displayName: string;
+  categoryDescription: string;
+  parentCategory?: Entry<CategoryBase>;
+}
+
+export interface Category {
+  sys: { id: string };
+  fields: {
     displayName: string;
+    categoryTree: string;
     categoryDescription: string;
-    parentCategory?: CategoryEntry
-}>;
+    parentCategory?: Entry<CategoryBase>;
+  };
+}
 
-export type CategoriesCollection = ContentfulCollection<CategoryEntry>;
+export type CategoryEntry = Entry<CategoryBase>;
+export type CategoryCollection = EntryCollection<CategoryBase>;
+
+export interface NavCategory {
+  id: string;
+  categoryTree: string;
+  displayName: string;
+  subcategories?: {
+    id: string;
+    categoryTree: string;
+    displayName: string;
+  }[];
+}
+
+export interface NavCategories {
+  [key: string]: NavCategory;
+}

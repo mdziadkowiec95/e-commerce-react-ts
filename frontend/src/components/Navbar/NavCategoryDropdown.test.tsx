@@ -1,16 +1,16 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import NavCategoryDropdown from './NavCategoryDropdown';
-import { INavCategory } from './types';
 import { renderWithRouter } from '../../common/helpers/tests';
+import { NavCategory } from '../../common/types/categories';
 
-const defaultCategory: INavCategory = {
+const defaultCategory: NavCategory = {
   id: '1',
   categoryTree: 'notebooks',
   displayName: 'Notebooks',
 };
 
-const mockCategoryWithSubcategories: INavCategory = {
+const mockCategoryWithSubcategories: NavCategory = {
   ...defaultCategory,
   subcategories: [
     {
@@ -34,7 +34,7 @@ describe('NavCategoryDropdown tests', () => {
   });
 
   test('renders dropdown when category is provided', () => {
-    const category: INavCategory = defaultCategory;
+    const category: NavCategory = defaultCategory;
     const { getByTestId } = renderWithRouter(
       <NavCategoryDropdown category={category} />
     );
@@ -50,7 +50,7 @@ describe('NavCategoryDropdown tests', () => {
   });
 
   test('renders only root category link if no subcategories provided', () => {
-    const category: INavCategory = {
+    const category: NavCategory = {
       ...defaultCategory,
       displayName: 'Testing display name',
     };

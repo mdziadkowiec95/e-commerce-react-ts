@@ -1,12 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { INavCategory } from './types';
+import { NavCategory } from '../../common/types/categories';
 
 interface Props {
-  category: INavCategory | undefined;
+  category: NavCategory | undefined;
 }
 
-const NavCategoryDropdown: FunctionComponent<Props> = ({ category }) =>
+const NavCategoryDropdown = ({ category }: Props) =>
   category ? (
     <div
       className="navbar-item has-dropdown is-hoverable"
@@ -17,7 +17,7 @@ const NavCategoryDropdown: FunctionComponent<Props> = ({ category }) =>
       </Link>
 
       <div className="navbar-dropdown" data-testid="nav-subcategories-wrap">
-        {category.subcategories?.map((subcategory: INavCategory) => (
+        {category.subcategories?.map((subcategory: NavCategory) => (
           <Link
             key={subcategory.id}
             className="navbar-item"

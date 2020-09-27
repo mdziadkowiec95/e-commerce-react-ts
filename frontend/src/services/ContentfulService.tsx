@@ -7,14 +7,11 @@ import {
 } from '../common/types/categories';
 import { getEnvironementVariable } from '../helpers/environment';
 
-const contentfulClient: ContentfulClientApi = createClient({
-  space: getEnvironementVariable('REACT_APP_CONTENTFUL_SPACE_ID'),
-  environment: 'master',
-  accessToken: getEnvironementVariable('REACT_APP_CONTENTFUL_ACCESS_TOKEN'),
-});
-
 export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
   return {
+    getClient(): ContentfulClientApi {
+      return client;
+    },
     async getCategories(): Promise<Category[]> {
       return client
         .getEntries<CategoryBase>({
@@ -76,5 +73,11 @@ export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
     },
   };
 };
+
+const contentfulClient: ContentfulClientApi = createClient({
+  space: getEnvironementVariable('REACT_APP_CONTENTFUL_SPACE_ID'),
+  environment: 'master',
+  accessToken: getEnvironementVariable('REACT_APP_CONTENTFUL_ACCESS_TOKEN'),
+});
 
 export default ContentfulServiceFactory(contentfulClient);

@@ -1,3 +1,5 @@
 export const getEnvironementVariable = (variable: string) => {
-    return (process.env[variable] as string);
-} 
+  console.log(process.env.NODE_ENV);
+
+  return process.env[variable] as string;
+};

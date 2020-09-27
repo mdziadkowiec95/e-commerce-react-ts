@@ -1,7 +1,9 @@
 import { createClient, ContentfulClientApi } from 'contentful';
 import {
-  CategoriesCollection,
+  Category,
+  CategoryBase,
   CategoryEntry,
+  CategoryCollection,
 } from '../common/types/categories';
 import { getEnvironementVariable } from '../helpers/environment';
 
@@ -11,40 +13,35 @@ const contentfulClient: ContentfulClientApi = createClient({
   accessToken: getEnvironementVariable('REACT_APP_CONTENTFUL_ACCESS_TOKEN'),
 });
 
-function mapPromise<T>(promise: Promise<any>, cb: Function): Promise<T> {
-  return new Promise((resolve, reject) => {
-    promise.then((res) => resolve(cb(res))).catch(reject);
-  });
-}
-
 export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
   return {
-    getCategories(): Promise<CategoryEntry[]> {
-      return mapPromise<CategoryEntry[]>(
-        client.getEntries({
+    async getCategories(): Promise<Category[]> {
+      return client
+        .getEntries<CategoryBase>({
           content_type: 'category',
-        }),
-        (res: CategoriesCollection) => {
-          return res.items.map((item: CategoryEntry) => {
-            const {
-              displayName,
-              categoryTree,
-              parentCategory,
-              categoryDescription,
-            } = item.fields;
-
-            return {
-              sys: { id: item.sys.id },
-              fields: {
+        })
+        .then((res: CategoryCollection): Category[] => {
+          return res.items.map(
+            (item: CategoryEntry): Category => {
+              const {
                 displayName,
                 categoryTree,
-                categoryDescription,
                 parentCategory,
-              },
-            };
-          });
-        }
-      );
+                categoryDescription,
+              } = item.fields;
+
+              return {
+                sys: { id: item.sys.id },
+                fields: {
+                  displayName,
+                  categoryTree,
+                  categoryDescription,
+                  parentCategory,
+                },
+              };
+            }
+          );
+        });
     },
 
     getProducts(parentCategory: string, subCategory: string): Promise<any> {

@@ -1,7 +1,7 @@
-import { CategoryEntry, NavCategories, NavCategory } from "../../common/types/categories";
+import { Category, NavCategories, NavCategory } from "../../common/types/categories";
 
 // Map single contentful category entry to extract only needed data
-const mapCategory = (category: CategoryEntry): NavCategory => {
+const mapCategory = (category: Category): NavCategory => {
 	const { categoryTree, displayName } = category.fields;
 	const { id } = category.sys;
 
@@ -13,9 +13,9 @@ const mapCategory = (category: CategoryEntry): NavCategory => {
 };
 
 // Map contentful categories data structure to make it easier to render deep navigation
-export const mapCategories = (categories: CategoryEntry[]): NavCategories => {
+export const mapCategories = (categories: Category[]): NavCategories => {
 	return categories.reduce(
-		(result: NavCategories, category: CategoryEntry): NavCategories => {
+		(result: NavCategories, category: Category): NavCategories => {
 			const { parentCategory, categoryTree } = category.fields;
 
 			if (!categoryTree) return result;

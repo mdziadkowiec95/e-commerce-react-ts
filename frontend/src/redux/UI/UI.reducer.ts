@@ -1,21 +1,43 @@
-import * as Types from './UI.types';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { NavCategories } from '../../common/types/categories';
 
-const INITIAL_STATE = {
-    reduxWorks: false,
+export interface UICategoriesState {
+	isLoading: boolean;
+	data: NavCategories;
+	error: any;
+}
+
+interface UIState {
+	categories: UICategoriesState;
+}
+
+const initialState: UIState = {
+	categories: {
+		isLoading: false,
+		data: {},
+		error: null
+	}
 };
 
-const reducer = (state = INITIAL_STATE, action: any) => {
-    switch (action.type) {
+const uiSlice = createSlice({
+	name: 'UI',
+	initialState,
+	reducers: {
+		fetchCategoriesBegin: ({ categories }) => {
+			categories.isLoading = true;
+		},
+		fetchCategoriesSuccess: ({ categories }, { payload }: PayloadAction<NavCategories>) => {
+			categories.isLoading = false;
+			categories.data = payload;
+		},
+		fetchCategoriesError: ({ categories }, { payload }: PayloadAction<any>) => {
+			categories.isLoading = false;
+			categories.error = payload;
+		}
+	}
+});
 
-        case Types.GET_CATEGORIES_BEGIN:
-            return {
-                reduxWorks: true
-            }
-
-        default:
-            return state;
-    }
-
-};
-
-export default reducer;
+// Export actions
+export const UIActions = uiSlice.actions;
+// Export reducer
+export default uiSlice.reducer;

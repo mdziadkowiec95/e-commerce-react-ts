@@ -1,14 +1,14 @@
-import { createClient, ContentfulClientApi } from "contentful";
+import { createClient, ContentfulClientApi } from 'contentful';
 import {
   CategoriesCollection,
   CategoryEntry,
-} from "../common/types/categories";
-import { getEnvironementVariable } from "../helpers/environment";
+} from '../common/types/categories';
+import { getEnvironementVariable } from '../helpers/environment';
 
 const contentfulClient: ContentfulClientApi = createClient({
-  space: getEnvironementVariable("REACT_APP_CONTENTFUL_SPACE_ID"),
-  environment: "master",
-  accessToken: getEnvironementVariable("REACT_APP_CONTENTFUL_ACCESS_TOKEN"),
+  space: getEnvironementVariable('REACT_APP_CONTENTFUL_SPACE_ID'),
+  environment: 'master',
+  accessToken: getEnvironementVariable('REACT_APP_CONTENTFUL_ACCESS_TOKEN'),
 });
 
 function mapPromise<T>(promise: Promise<any>, cb: Function): Promise<T> {
@@ -22,7 +22,7 @@ export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
     getCategories(): Promise<CategoryEntry[]> {
       return mapPromise<CategoryEntry[]>(
         client.getEntries({
-          content_type: "category",
+          content_type: 'category',
         }),
         (res: CategoriesCollection) => {
           return res.items.map((item: CategoryEntry) => {
@@ -48,7 +48,7 @@ export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
     },
 
     getProducts(parentCategory: string, subCategory: string): Promise<any> {
-      let query = "";
+      let query = '';
 
       if (parentCategory) {
         query += parentCategory;
@@ -62,18 +62,18 @@ export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
 
       if (subCategory && parentCategory) {
         options = {
-          "fields.category.sys.contentType.sys.id": "category",
-          "fields.category.fields.categoryTree": query,
+          'fields.category.sys.contentType.sys.id': 'category',
+          'fields.category.fields.categoryTree': query,
         };
       } else if (parentCategory && !subCategory) {
         options = {
-          "fields.rootCategory.sys.contentType.sys.id": "category",
-          "fields.rootCategory.fields.categoryTree": query,
+          'fields.rootCategory.sys.contentType.sys.id': 'category',
+          'fields.rootCategory.fields.categoryTree': query,
         };
       }
 
       return client.getEntries({
-        content_type: "product",
+        content_type: 'product',
         ...options,
       });
     },

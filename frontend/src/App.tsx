@@ -1,32 +1,25 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './scss/app.scss';
 import Products from './views/Products';
-import axios from 'axios';
-import Navbar from './components/Navbar/Navbar';
-import { getCategoriesBegin } from './redux/UI/UI.actions';
-import { Dispatch } from 'redux';
-import { connect } from 'react-redux';
+import * as UIThunks from './redux/UI/UI.thunks';
+import NavbarContainer from './containers/NavbarContainer';
 
 interface AppProps {
   UI: any;
-  getCategories: Function;
+  fetchCategories: Function;
 }
 
-function App({ UI, getCategories }: AppProps) {
+function App({ fetchCategories }: AppProps) {
   useEffect(() => {
-    getCategories();
-  }, [getCategories]);
-
-  // Test server communication
-  // axios.get('/api').then((res) => {
-  //   console.log('Welcome to your server :D', res.data.msg);
-  // });
+    fetchCategories();
+  }, [fetchCategories]);
 
   return (
     <div className="App">
       <Router>
-        <Navbar />
+        <NavbarContainer />
         <Switch>
           <Route
             exact
@@ -52,10 +45,8 @@ const mapStateToProps = (state: any) => {
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch) => {
-  return {
-    getCategories: () => dispatch(getCategoriesBegin()),
-  };
+const mapDispatchToProps = {
+  fetchCategories: UIThunks.fetchCategories,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

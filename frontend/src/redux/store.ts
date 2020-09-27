@@ -1,14 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { useDispatch } from 'react-redux';
 import { Action, Store } from 'redux';
-import thunk, { ThunkAction } from 'redux-thunk';
+import { ThunkAction } from 'redux-thunk';
 import rootReducer, { RootState } from './rootReducer';
 
-const middlewares = [thunk];
-
-const store: Store = configureStore({
+const store = configureStore({
 	reducer: rootReducer,
-	middleware: [...middlewares]
 })
 
 export default store;

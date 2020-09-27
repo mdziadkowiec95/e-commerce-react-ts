@@ -18,26 +18,28 @@ export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
           content_type: 'category',
         })
         .then((res: CategoryCollection): Category[] => {
-          return res.items.map(
-            (item: CategoryEntry): Category => {
-              const {
-                displayName,
-                categoryTree,
-                parentCategory,
-                categoryDescription,
-              } = item.fields;
+          return res.items
+            ? res.items.map(
+                (item: CategoryEntry): Category => {
+                  const {
+                    displayName,
+                    categoryTree,
+                    parentCategory,
+                    categoryDescription,
+                  } = item.fields;
 
-              return {
-                sys: { id: item.sys.id },
-                fields: {
-                  displayName,
-                  categoryTree,
-                  categoryDescription,
-                  parentCategory,
-                },
-              };
-            }
-          );
+                  return {
+                    sys: { id: item.sys.id },
+                    fields: {
+                      displayName,
+                      categoryTree,
+                      categoryDescription,
+                      parentCategory,
+                    },
+                  };
+                }
+              )
+            : [];
         });
     },
 

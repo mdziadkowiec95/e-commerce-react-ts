@@ -1,14 +1,10 @@
-const express = require('express');
-const app = express();
-const cors = require('cors');
-const port = process.env.PORT || 5000;
+(async () => {
+  const db = await require('./db/connection');
+  const app = require('./app')(db);
 
-app.use(cors());
+  const port = process.env.PORT || 5000;
 
-app.get('/api', (req, res) => {
-  res.json({ msg: 'Hello World!' });
-})
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-});
+  app.listen(port, () => {
+    console.log(`E-commerce backend app listening on port ${port}`);
+  });
+})();

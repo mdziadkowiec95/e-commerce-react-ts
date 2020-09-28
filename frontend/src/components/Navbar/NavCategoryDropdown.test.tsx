@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import NavCategoryDropdown from './NavCategoryDropdown';
-import { renderWithRouter } from '../../common/helpers/tests';
+import { renderWithRouter } from '../../../tests/helpers/router';
 import { NavCategory } from '../../common/types/categories';
 
 const defaultCategory: NavCategory = {

@@ -7,6 +7,7 @@
     "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:client": "npm start --prefix frontend",
     "start:server": "node server/server.js",
+    "dev": "nodemon -r dotenv/config server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,17 +21,25 @@
   },
   "homepage": "https://github.com/mdziadkowiec95/e-commerce-react-ts#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.6.1",
+    "joi": "^17.2.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.2",
+    "mongoose": "^5.10.7"
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
-    "husky": "^4.3.0"
-	},
-	"husky": {
+    "husky": "^4.3.0",
+    "nodemon": "^2.0.4"
+  },
+  "husky": {
     "hooks": {
-			"pre-commit": "npm test --prefix frontend",
-			"pre-push": "npm test --prefix frontend"
+      "pre-commit": "npm test --prefix frontend",
+      "pre-push": "npm test --prefix frontend"
     }
   }
 }

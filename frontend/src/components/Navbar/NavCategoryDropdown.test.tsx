@@ -78,7 +78,7 @@ describe('NavCategoryDropdown tests', () => {
     expect(subcategoryLinks[1].getAttribute('href')).toEqual(
       '/products/notebooks/accessories'
     );
-    expect(subcategoryLinks[0].textContent).toEqual('Chargers');
+    expect(subcategoryLinks[0].textContent).toEqual('Chargersxxx');
     expect(subcategoryLinks[1].textContent).toEqual('Accessories');
   });
 

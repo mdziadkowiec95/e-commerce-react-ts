@@ -1,19 +1,21 @@
 const { validationResult } = require('express-validator');
 
-module.exports = ({ usersService, usersRepository }) => {
+function wrapWithTryCatch(fn) {
+  return async function (req, res, next) {
+    return Promise.resolve(fn(req, res, next)).catch(next);
+  };
+}
+
+function withErrorHandling(api) {
+  return mapValues(api, wrapWithTryCatch);
+}
+
+module.exports = ({ usersService, UserModel }) => {
   return {
     async register(req, res) {
       try {
-        const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-          return res.status(400).json({
-            errors: errors.array(),
-          });
-        }
-
         const { email, password, firstName, lastName } = req.body;
-        let user = await usersRepository.findOne(email);
+        let user = await UserModel.findOne({ email });
 
         if (user) {
           return res.status(400).json({
@@ -23,13 +25,14 @@ module.exports = ({ usersService, usersRepository }) => {
 
         const encryptedPassword = await usersService.encryptPassword(password);
 
-        const insertedUser = await usersRepository.insertOne({
+        user = new UserModel({
           email,
           password: encryptedPassword,
           firstName,
           lastName,
-          isVerified: false,
         });
+
+        await user.save();
 
         // TODO -> Create and save email verificaiton token
 
@@ -37,7 +40,7 @@ module.exports = ({ usersService, usersRepository }) => {
 
         const jwtPayload = {
           user: {
-            id: insertedUser.ops[0]._id,
+            id: user._id,
           },
         };
 

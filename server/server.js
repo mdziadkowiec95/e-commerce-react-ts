@@ -1,6 +1,6 @@
 (async () => {
-  const db = await require('./db/connection');
-  const app = require('./app')(db);
+  await require('./db/connection')();
+  const app = require('./app');
 
   const port = process.env.PORT || 5000;
 

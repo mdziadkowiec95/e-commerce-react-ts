@@ -1,4 +1,4 @@
-module.exports = ({ userRepository, bcrypt, jwt }) => ({
+module.exports = ({ UserModel, bcrypt, jwt }) => ({
   async encryptPassword(password) {
     const salt = await bcrypt.genSalt(10);
     return await bcrypt.hashSync(password, salt);

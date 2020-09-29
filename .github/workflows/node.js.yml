@@ -7,9 +7,9 @@ on:
   pull_request:
     branches: [develop]
 
-env: # Or as an environment variable
-  REACT_APP_CONTENTFUL_ACCESS_TOKEN: abc
-  REACT_APP_CONTENTFUL_SPACE_ID: asb
+env:
+  REACT_APP_CONTENTFUL_ACCESS_TOKEN: ${{ secrets.CONTENTFUL_ACCESS_TOKEN }}
+  REACT_APP_CONTENTFUL_SPACE_ID: ${{ secrets.CONTENTFUL_SPACE_ID }}
 
 jobs:
   build:

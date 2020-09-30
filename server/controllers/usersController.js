@@ -46,10 +46,10 @@ module.exports = ({ usersService, UserModel }) => {
 
         const token = usersService.createJSONWebToken(jwtPayload);
 
-        res.json({ token });
+        res.status(201).json({ token });
       } catch (error) {
         console.log(error.message);
-        res.status(500).send('Server error!');
+        res.status(500).send('Internal server error!');
       }
     },
   };

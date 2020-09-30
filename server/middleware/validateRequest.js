@@ -2,9 +2,10 @@ const { validationResult } = require('express-validator');
 
 /**
  * @desc Global error handler for express validator middleware
+ * @param {Function} validationResult - express-validator dependency used for validation
  * @param {Array} validators - an array of 'express-validator/check' function validators
  */
-module.exports = (validators) => {
+const validateRequestFactory = (validationResult) => (validators) => {
   return [
     validators,
     (req, res, next) => {
@@ -19,4 +20,8 @@ module.exports = (validators) => {
       next();
     },
   ];
+};
+module.exports = {
+  validateRequestFactory,
+  validateRequest: validateRequestFactory(validationResult),
 };

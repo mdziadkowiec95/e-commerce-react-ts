@@ -1,15 +1,3 @@
-const { validationResult } = require('express-validator');
-
-function wrapWithTryCatch(fn) {
-  return async function (req, res, next) {
-    return Promise.resolve(fn(req, res, next)).catch(next);
-  };
-}
-
-function withErrorHandling(api) {
-  return mapValues(api, wrapWithTryCatch);
-}
-
 module.exports = ({ usersService, UserModel }) => {
   return {
     async register(req, res) {

@@ -32,19 +32,19 @@ const Navbar = ({ categories }: Props) => {
           />
         </a>
 
-        <a
+        <Link
           role="button"
           className="navbar-burger burger"
           aria-label="menu"
           aria-expanded="false"
           data-target="navbarBasicExample"
           onClick={(e) => e.preventDefault()}
-          href="#"
+          to="/"
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
-        </a>
+        </Link>
       </div>
 
       <div id="navbarBasicExample" className="navbar-menu">
@@ -58,10 +58,10 @@ const Navbar = ({ categories }: Props) => {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <a className="button is-primary">
+              <Link to="/register" className="button is-primary">
                 <strong>Sign up</strong>
-              </a>
-              <a className="button is-light">Log in</a>
+              </Link>
+              <button className="button is-light">Log in</button>
             </div>
           </div>
         </div>

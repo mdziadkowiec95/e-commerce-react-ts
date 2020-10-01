@@ -5,6 +5,7 @@ import './scss/app.scss';
 import Products from './views/Products';
 import * as UIThunks from './redux/UI/UI.thunks';
 import NavbarContainer from './containers/NavbarContainer';
+import RegistrationView from './views/Registration';
 
 interface AppProps {
   UI: any;
@@ -20,20 +21,23 @@ function App({ fetchCategories }: AppProps) {
     <div className="App">
       <Router>
         <NavbarContainer />
-        <Switch>
-          <Route
-            exact
-            path="/"
-            component={() => {
-              return <h1>Home</h1>;
-            }}
-          />
-          <Route
-            exact
-            path="/products/:rootCategory?/:subCategory?"
-            component={Products}
-          />
-        </Switch>
+        <div className="container">
+          <Switch>
+            <Route
+              exact
+              path="/"
+              component={() => {
+                return <h1>Home</h1>;
+              }}
+            />
+            <Route exact path="/register" component={RegistrationView} />
+            <Route
+              exact
+              path="/products/:rootCategory?/:subCategory?"
+              component={Products}
+            />
+          </Switch>
+        </div>
       </Router>
     </div>
   );

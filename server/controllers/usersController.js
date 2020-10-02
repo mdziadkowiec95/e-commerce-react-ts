@@ -36,7 +36,7 @@ module.exports = ({ usersService, UserModel }) => {
 
         res.status(201).json({ token });
       } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).send('Internal server error!');
       }
     },

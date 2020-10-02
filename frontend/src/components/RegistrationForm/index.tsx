@@ -1,4 +1,5 @@
 import React from 'react';
+import { useHistory } from 'react-router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import TextField from '../TextField';
@@ -25,7 +26,7 @@ const RegistrationFormSchema = Yup.object().shape({
     .required('Password confirmation is required.'),
 });
 
-interface FormValues {
+export interface RegistrationFormValues {
   firstName: string;
   lastName: string;
   email: string;
@@ -33,8 +34,14 @@ interface FormValues {
   passwordConfirm: string;
 }
 
-const RegistrationForm = () => {
-  const formik = useFormik<FormValues>({
+interface Props {
+  registerUser: Function;
+}
+
+const RegistrationForm = ({ registerUser }: Props) => {
+  const history = useHistory();
+
+  const formik = useFormik<RegistrationFormValues>({
     initialValues: {
       firstName: '',
       lastName: '',
@@ -43,11 +50,10 @@ const RegistrationForm = () => {
       passwordConfirm: '',
     },
     validationSchema: RegistrationFormSchema,
-    onSubmit: (values) => {
-      // TODO
-      // 1. Trigger redux action
-      // 2.
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: (values: RegistrationFormValues) => {
+      registerUser(values, () => {
+        history.push('/');
+      });
     },
   });
 

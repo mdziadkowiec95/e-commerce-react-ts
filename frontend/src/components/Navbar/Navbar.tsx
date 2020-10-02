@@ -6,9 +6,13 @@ import { NavCategory } from '../../common/types/categories';
 
 interface Props {
   categories: UICategoriesState;
+  user: {
+    isAuth: boolean;
+    isLoading: boolean;
+  };
 }
 
-const Navbar = ({ categories }: Props) => {
+const Navbar = ({ categories, user }: Props) => {
   const renderNavCategories = (categoriesState: UICategoriesState) => {
     const navCategories = categoriesState.data;
 
@@ -57,12 +61,16 @@ const Navbar = ({ categories }: Props) => {
 
         <div className="navbar-end">
           <div className="navbar-item">
-            <div className="buttons">
-              <Link to="/register" className="button is-primary">
-                <strong>Sign up</strong>
-              </Link>
-              <button className="button is-light">Log in</button>
-            </div>
+            {!user.isLoading && !user.isAuth ? (
+              <div className="buttons">
+                <Link to="/register" className="button is-primary">
+                  <strong>Sign up</strong>
+                </Link>
+                <button className="button is-light">Log in</button>
+              </div>
+            ) : (
+              <button className="button is-light">Log out</button>
+            )}
           </div>
         </div>
       </div>

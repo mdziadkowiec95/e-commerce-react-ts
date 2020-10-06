@@ -42,7 +42,7 @@ const TextField = ({
   });
   return (
     <div className="field">
-      <label htmlFor={id} className="label">
+      <label htmlFor={id} className="label" data-testid="TextField-label">
         {label}
       </label>
       <div className="control has-icons-left has-icons-right">
@@ -58,18 +58,27 @@ const TextField = ({
           value={value}
         />
         {leftIcon && (
-          <span className="icon is-small is-left">
+          <span
+            className="icon is-small is-left"
+            data-testid="TextField-leftIcon"
+          >
             <FontAwesomeIcon icon={leftIcon} />
           </span>
         )}
 
         {touched ? (
           error ? (
-            <span className="icon is-small is-right has-text-danger">
+            <span
+              className="icon is-small is-right has-text-danger"
+              data-testid="TextField-dangerIcon"
+            >
               <FontAwesomeIcon icon={faExclamationCircle} />
             </span>
           ) : (
-            <span className="icon is-small is-right has-text-success">
+            <span
+              className="icon is-small is-right has-text-success"
+              data-testid="TextField-successIcon"
+            >
               <FontAwesomeIcon icon={faCheckCircle}></FontAwesomeIcon>
             </span>
           )
@@ -78,10 +87,17 @@ const TextField = ({
 
       {touched ? (
         error ? (
-          <p className="help is-danger">{error}</p>
+          <p className="help is-danger" data-testid="TextField-dangerMessage">
+            {error}
+          </p>
         ) : (
           validFieldMessage && (
-            <p className="help is-success">{validFieldMessage}</p>
+            <p
+              className="help is-success"
+              data-testid="TextField-successMessage"
+            >
+              {validFieldMessage}
+            </p>
           )
         )
       ) : null}

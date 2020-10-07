@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 import NavCategoryDropdown from './NavCategoryDropdown';
 import { UICategoriesState } from '../../redux/UI/UI.reducer';
 import { NavCategory } from '../../common/types/categories';
+import UserMenu from '../UserMenu';
+import { User } from '../../common/types/user';
 
 interface Props {
   categories: UICategoriesState;
   user: {
     isAuth: boolean;
     isLoading: boolean;
+    user: User | null;
   };
 }
 
@@ -27,14 +30,14 @@ const Navbar = ({ categories, user }: Props) => {
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <a className="navbar-item" href="https://bulma.io">
+        <Link className="navbar-item" to="/">
           <img
             src="https://bulma.io/images/bulma-logo.png"
             width="112"
             height="28"
             alt="Some alt"
           />
-        </a>
+        </Link>
 
         <Link
           role="button"
@@ -61,16 +64,13 @@ const Navbar = ({ categories, user }: Props) => {
 
         <div className="navbar-end">
           <div className="navbar-item">
-            {!user.isLoading && !user.isAuth ? (
-              <div className="buttons">
-                <Link to="/register" className="button is-primary">
-                  <strong>Sign up</strong>
-                </Link>
-                <button className="button is-light">Log in</button>
-              </div>
-            ) : (
-              <button className="button is-light">Log out</button>
-            )}
+            <div className="buttons">
+              <UserMenu
+                isAuth={user.isAuth}
+                isLoading={user.isLoading}
+                user={user.user}
+              />
+            </div>
           </div>
         </div>
       </div>

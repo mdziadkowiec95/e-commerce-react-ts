@@ -5,8 +5,9 @@ import { RootState } from '../redux/rootReducer';
 const mapStateToProps = ({ UI, user }: RootState) => ({
   categories: UI.categories,
   user: {
-    isLoading: user.isLoading,
     isAuth: user.isAuth,
+    isLoading: user.isLoading,
+    user: user.user,
   },
 });
 

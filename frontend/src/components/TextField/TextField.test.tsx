@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FocusEvent, useState } from 'react';
 import { fireEvent, render, wait } from '@testing-library/react';
-import TextField from '.';
+import TextField, { TextFieldType } from '.';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 // Helper component to handle dumb component state
@@ -108,7 +108,7 @@ describe('<TextField />', () => {
     expect(name.value).toEqual('testingNameFieldBlur');
   });
 
-  test('should add render ID attribute correctly', () => {
+  test('should render ID attribute correctly', () => {
     const { container } = render(
       <TextFieldWrapper id="registerFirstNameId" name="firstName" />
     );
@@ -120,7 +120,7 @@ describe('<TextField />', () => {
     expect(name.id).toEqual('registerFirstNameId');
   });
 
-  test('should add render ID attribute correctly', () => {
+  test('should render ID attribute correctly', () => {
     const { container } = render(
       <TextFieldWrapper id="registerFirstNameId" name="firstName" />
     );
@@ -132,7 +132,7 @@ describe('<TextField />', () => {
     expect(name.id).toEqual('registerFirstNameId');
   });
 
-  test('should add render placeholder attribute correctly', () => {
+  test('should render placeholder attribute correctly', () => {
     const { container } = render(
       <TextFieldWrapper placeholder="Testing placeholder" name="firstName" />
     );
@@ -142,6 +142,34 @@ describe('<TextField />', () => {
     ) as HTMLInputElement;
 
     expect(name.getAttribute('placeholder')).toEqual('Testing placeholder');
+  });
+
+  test('should render default type if not provided', () => {
+    const { container } = render(
+      <TextFieldWrapper id="registerFirstNameId" name="firstName" />
+    );
+
+    const name = container.querySelector(
+      'input[name="firstName"]'
+    ) as HTMLInputElement;
+
+    expect(name.type).toEqual('text');
+  });
+
+  test('should set provided type corretly', () => {
+    const { container } = render(
+      <TextFieldWrapper
+        id="registerFirstNameId"
+        name="firstName"
+        type={TextFieldType.Password}
+      />
+    );
+
+    const name = container.querySelector(
+      'input[name="firstName"]'
+    ) as HTMLInputElement;
+
+    expect(name.type).toEqual('password');
   });
 
   test('should render label correctly', () => {
@@ -156,8 +184,8 @@ describe('<TextField />', () => {
 
     const labelEl = queryByTestId('TextField-label');
 
-    expect(labelEl.getAttribute('for')).toEqual('testIdForLabel');
-    expect(labelEl.textContent).toEqual('testLabelText');
+    expect(labelEl?.getAttribute('for')).toEqual('testIdForLabel');
+    expect(labelEl?.textContent).toEqual('testLabelText');
   });
 
   test('should render left side icon if provided as prop', () => {
@@ -166,7 +194,7 @@ describe('<TextField />', () => {
     );
 
     const leftIconWrap = queryByTestId('TextField-leftIcon');
-    const leftIcon = leftIconWrap.querySelector('svg');
+    const leftIcon = leftIconWrap?.querySelector('svg');
 
     expect(leftIcon?.getAttribute('data-icon')).toEqual('check');
   });

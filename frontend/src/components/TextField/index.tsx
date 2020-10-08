@@ -7,12 +7,18 @@ import {
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 
+export enum TextFieldType {
+  Text = 'text',
+  Password = 'password',
+}
+
 interface Props {
   id: string;
   name: string;
   label: string;
   value: string;
   placeholder: string;
+  type?: TextFieldType;
   leftIcon?: IconDefinition;
   error?: string;
   touched?: boolean;
@@ -28,6 +34,7 @@ const TextField = ({
   label,
   value,
   placeholder,
+  type = TextFieldType.Text,
   leftIcon,
   error,
   touched,
@@ -50,7 +57,7 @@ const TextField = ({
           id={id}
           name={name}
           className={inputClassName}
-          type="text"
+          type={type}
           onChange={onChangeFn}
           onFocus={onFocusFn}
           onBlur={onBlurFn}

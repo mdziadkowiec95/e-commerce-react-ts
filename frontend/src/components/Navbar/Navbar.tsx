@@ -13,9 +13,10 @@ interface Props {
     isLoading: boolean;
     user: User | null;
   };
+  logoutUser: () => Promise<void> | void;
 }
 
-const Navbar = ({ categories, user }: Props) => {
+const Navbar = ({ categories, user, logoutUser }: Props) => {
   const renderNavCategories = (categoriesState: UICategoriesState) => {
     const navCategories = categoriesState.data;
 
@@ -69,6 +70,7 @@ const Navbar = ({ categories, user }: Props) => {
                 isAuth={user.isAuth}
                 isLoading={user.isLoading}
                 user={user.user}
+                onLogout={logoutUser}
               />
             </div>
           </div>

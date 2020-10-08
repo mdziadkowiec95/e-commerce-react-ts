@@ -5,14 +5,16 @@ import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import { User } from '../../common/types/user';
 import UserAvatar from './UserAvatar';
+import SignInContainer from '../../containers/SignInContainer';
 
 interface Props {
   isAuth: boolean;
   isLoading: boolean;
   user: User | null;
+  onLogout: () => Promise<void> | void;
 }
 
-const UserMenu = ({ isLoading, isAuth, user }: Props) => {
+const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
   const [isActive, setIsActive] = useState(false);
 
   const dropdownClassName = cn('dropdown', 'is-hoverable', 'is-right', {
@@ -27,13 +29,20 @@ const UserMenu = ({ isLoading, isAuth, user }: Props) => {
     <div className={dropdownClassName}>
       <div className="dropdown-trigger">
         <button
-          className="button no-border"
+          className="button reset-button"
           aria-haspopup="true"
           aria-controls="dropdown-menu4"
           onClick={handleUserButtonIconClick}
         >
           <span className="icon is-small">
-            <FontAwesomeIcon icon={faUser} />
+            {!isLoading && !isAuth ? (
+              <FontAwesomeIcon icon={faUser} />
+            ) : (
+              <UserAvatar
+                firstName={user?.firstName}
+                lastName={user?.lastName}
+              />
+            )}
           </span>
         </button>
       </div>
@@ -43,13 +52,12 @@ const UserMenu = ({ isLoading, isAuth, user }: Props) => {
           <div className="dropdown-menu" id="dropdown-menu4" role="menu">
             <div className="dropdown-content">
               <div className="dropdown-item has-text-centered">
-                <button className="button is-light is-rounded is-fullwidth mb-2">
-                  Sign in
-                </button>
+                <SignInContainer />
                 <p className="mb-2">Don't have acoount yet?</p>
+
                 <Link
                   to="/register"
-                  className="button is-primary is-rounded is-fullwidth"
+                  className="is-primary is-rounded is-fullwidth"
                 >
                   <strong>Sign up</strong>
                 </Link>
@@ -81,8 +89,9 @@ const UserMenu = ({ isLoading, isAuth, user }: Props) => {
                 <FontAwesomeIcon icon={faArrowRight} size="2x" />
               </button>
 
-              <UserAvatar firstName={user.firstName} lastName={user.lastName} />
-              <button className="button is-light">Log out</button>
+              <button onClick={onLogout} className="button is-light">
+                Log out
+              </button>
             </div>
           </div>
         )

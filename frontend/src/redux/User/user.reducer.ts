@@ -24,22 +24,25 @@ const initialState: UserState = {
 	},
 };
 
+export const turnOnLoading = (state: UserState) => {
+	state.isLoading = true;
+};
+
+export const turnOffLoading = (state: UserState) => {
+	state.isLoading = false;
+};
+
 const userSlice = createSlice({
 	name: 'user',
 	initialState,
 	reducers: {
-		registerUserBegin: state => {
-			state.isLoading = true;
-		},
-		registerUserSuccess: state => {
-			state.isLoading = false;
-		},
-		registerUserError: (state) => {
-			state.isLoading = false;
-		},
-		authenticateBegin: state => {
-			state.isLoading = true;
-		},
+		registerUserBegin: turnOnLoading,
+		registerUserSuccess: turnOffLoading,
+		registerUserError: turnOffLoading,
+		signInBegin: turnOnLoading,
+		signInSuccess: turnOffLoading,
+		signInError: turnOffLoading,
+		authenticateBegin: turnOnLoading,
 		authenticateSuccess: (state, { payload }: PayloadAction<User>) => {
 			state.isAuth = true;
 			state.user = payload;
@@ -47,6 +50,16 @@ const userSlice = createSlice({
 		},
 		authenticateError: state => {
 			state.isLoading = false;
+		},
+		logoutUser: state => {
+			state.isLoading = false;
+			state.isAuth = false;
+			state.user = null;
+			state.verification = {
+				isVerified: false,
+				tokenExpired: false,
+				tokenResend: false,
+			};
 		}
 	}
 });

@@ -3,3 +3,9 @@
 @import './abstracts/mixins';
 
 @import './vendors/bulma';
+
+.reset-button {
+  background: transparent;
+  border: none;
+  outline: none;
+}

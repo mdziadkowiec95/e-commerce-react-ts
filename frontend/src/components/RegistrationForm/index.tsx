@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory } from 'react-router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import TextField from '../TextField';
+import TextField, { TextFieldType } from '../TextField';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
 
 const RegistrationFormSchema = Yup.object().shape({
@@ -35,7 +35,10 @@ export interface RegistrationFormValues {
 }
 
 interface Props {
-  registerUser: Function;
+  registerUser: (
+    userData: RegistrationFormValues,
+    onSuccessCb: () => void
+  ) => Promise<void>;
 }
 
 const RegistrationForm = ({ registerUser }: Props) => {
@@ -105,6 +108,7 @@ const RegistrationForm = ({ registerUser }: Props) => {
         id="registerPassword"
         name="password"
         label="Password"
+        type={TextFieldType.Password}
         value={formik.values.password}
         error={formik.errors.password}
         touched={formik.touched.password}
@@ -119,6 +123,7 @@ const RegistrationForm = ({ registerUser }: Props) => {
         id="registerPasswordConfirm"
         name="passwordConfirm"
         label="Password confirmation"
+        type={TextFieldType.Password}
         value={formik.values.passwordConfirm}
         error={formik.errors.passwordConfirm}
         touched={formik.touched.passwordConfirm}

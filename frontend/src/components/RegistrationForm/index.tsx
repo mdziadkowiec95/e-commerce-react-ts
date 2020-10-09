@@ -1,9 +1,8 @@
 import React from 'react';
-import { useHistory } from 'react-router';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import TextField, { TextFieldType } from '../TextField';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import TextField, { TextFieldType } from '../TextField';
 
 const RegistrationFormSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -35,15 +34,10 @@ export interface RegistrationFormValues {
 }
 
 interface Props {
-  registerUser: (
-    userData: RegistrationFormValues,
-    onSuccessCb: () => void
-  ) => Promise<void>;
+  onSubmit: (values: RegistrationFormValues) => void;
 }
 
-const RegistrationForm = ({ registerUser }: Props) => {
-  const history = useHistory();
-
+const RegistrationForm = ({ onSubmit }: Props) => {
   const formik = useFormik<RegistrationFormValues>({
     initialValues: {
       firstName: '',
@@ -53,11 +47,7 @@ const RegistrationForm = ({ registerUser }: Props) => {
       passwordConfirm: '',
     },
     validationSchema: RegistrationFormSchema,
-    onSubmit: (values: RegistrationFormValues) => {
-      registerUser(values, () => {
-        history.push('/');
-      });
-    },
+    onSubmit: (values: RegistrationFormValues) => onSubmit(values),
   });
 
   return (

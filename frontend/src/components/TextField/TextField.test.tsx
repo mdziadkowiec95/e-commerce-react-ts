@@ -278,4 +278,25 @@ describe('<TextField />', () => {
     expect(errorText).toBeFalsy();
     expect(successText).toBeFalsy();
   });
+
+  test('should render field of type "text" by default', () => {
+    const { getByLabelText } = render(
+      <TextFieldWrapper id="password" label="Password" name="password" />
+    );
+
+    expect(getByLabelText('Password').getAttribute('type')).toEqual('text');
+  });
+
+  test('should render field based on "type" prop correctly', () => {
+    const { getByLabelText } = render(
+      <TextFieldWrapper
+        id="password"
+        label="Password"
+        name="password"
+        type={TextFieldType.Password}
+      />
+    );
+
+    expect(getByLabelText('Password').getAttribute('type')).toEqual('password');
+  });
 });

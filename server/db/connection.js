@@ -1,9 +1,18 @@
-const MongoClient = require('mongodb').MongoClient;
+const mongoose = require('mongoose');
 const url = process.env.MONGO_URI || 'mongodb://localhost:27017/ecom-api';
 
-module.exports = MongoClient.connect(url, {
-  bufferMaxEntries: 0,
-  useUnifiedTopology: true,
-}).then(function (client) {
-  return client.db();
-});
+const connectDB = async () => {
+  try {
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+
+    console.log('Mongo DB connected successfully!');
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+};
+
+module.exports = connectDB;

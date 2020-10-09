@@ -3,12 +3,20 @@ import { Link } from 'react-router-dom';
 import NavCategoryDropdown from './NavCategoryDropdown';
 import { UICategoriesState } from '../../redux/UI/UI.reducer';
 import { NavCategory } from '../../common/types/categories';
+import UserMenu from '../UserMenu';
+import { User } from '../../common/types/user';
 
 interface Props {
   categories: UICategoriesState;
+  user: {
+    isAuth: boolean;
+    isLoading: boolean;
+    user: User | null;
+  };
+  logoutUser: () => Promise<void> | void;
 }
 
-const Navbar = ({ categories }: Props) => {
+const Navbar = ({ categories, user, logoutUser }: Props) => {
   const renderNavCategories = (categoriesState: UICategoriesState) => {
     const navCategories = categoriesState.data;
 
@@ -23,28 +31,28 @@ const Navbar = ({ categories }: Props) => {
   return (
     <nav className="navbar" role="navigation" aria-label="main navigation">
       <div className="navbar-brand">
-        <a className="navbar-item" href="https://bulma.io">
+        <Link className="navbar-item" to="/">
           <img
             src="https://bulma.io/images/bulma-logo.png"
             width="112"
             height="28"
             alt="Some alt"
           />
-        </a>
+        </Link>
 
-        <a
+        <Link
           role="button"
           className="navbar-burger burger"
           aria-label="menu"
           aria-expanded="false"
           data-target="navbarBasicExample"
           onClick={(e) => e.preventDefault()}
-          href="#"
+          to="/"
         >
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
-        </a>
+        </Link>
       </div>
 
       <div id="navbarBasicExample" className="navbar-menu">
@@ -58,10 +66,12 @@ const Navbar = ({ categories }: Props) => {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <a className="button is-primary">
-                <strong>Sign up</strong>
-              </a>
-              <a className="button is-light">Log in</a>
+              <UserMenu
+                isAuth={user.isAuth}
+                isLoading={user.isLoading}
+                user={user.user}
+                onLogout={logoutUser}
+              />
             </div>
           </div>
         </div>

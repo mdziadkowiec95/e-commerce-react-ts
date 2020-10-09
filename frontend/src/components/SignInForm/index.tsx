@@ -28,7 +28,7 @@ const SignInForm = ({ onSubmit }: Props) => {
       password: '',
     },
     validationSchema: SignInFormSchema,
-    onSubmit,
+    onSubmit: (values: SignInFormValues) => onSubmit(values),
   });
 
   return (

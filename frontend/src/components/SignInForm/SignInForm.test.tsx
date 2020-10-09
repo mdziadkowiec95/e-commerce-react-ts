@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, wait } from '@testing-library/react';
 import SignInForm from '.';
+import { changeInputValue } from '../../../tests/helpers/fireEvent';
 
 describe('<SignInForm />', () => {
   test('renders without crashing', () => {
@@ -11,35 +12,19 @@ describe('<SignInForm />', () => {
   test('should submit correct values', async () => {
     const onSubmitFn = jest.fn();
 
-    const { container } = render(<SignInForm onSubmit={onSubmitFn} />);
+    const { getByLabelText, container } = render(
+      <SignInForm onSubmit={onSubmitFn} />
+    );
 
-    const email = container.querySelector(
-      'input[name="email"]'
-    ) as HTMLInputElement;
-    const password = container.querySelector(
-      'input[name="password"]'
-    ) as HTMLInputElement;
+    const email = getByLabelText('Email');
+    const password = getByLabelText('Password');
     const submitBtn = container.querySelector(
       'button[type="submit"]'
     ) as HTMLButtonElement;
 
     await wait(() => {
-      fireEvent.change(email, {
-        target: {
-          value: 'test@test.pl',
-        },
-      });
-    });
-
-    await wait(() => {
-      fireEvent.change(password, {
-        target: {
-          value: '123123123',
-        },
-      });
-    });
-
-    await wait(() => {
+      changeInputValue(email, 'test@test.pl');
+      changeInputValue(password, '123123123');
       fireEvent.click(submitBtn);
     });
 
@@ -51,21 +36,14 @@ describe('<SignInForm />', () => {
   });
 
   test('should should proper message when email is empty', async () => {
-    const { container, queryByText } = render(
+    const { getByLabelText, queryByText } = render(
       <SignInForm onSubmit={() => {}} />
     );
 
-    const email = container.querySelector(
-      'input[name="email"]'
-    ) as HTMLInputElement;
+    const email = getByLabelText('Email');
 
     await wait(() => {
-      fireEvent.change(email, {
-        target: {
-          value: '',
-        },
-      });
-
+      changeInputValue(email, '');
       fireEvent.blur(email);
     });
 
@@ -73,21 +51,14 @@ describe('<SignInForm />', () => {
   });
 
   test('should should proper message when email is not valid', async () => {
-    const { container, queryByText } = render(
+    const { getByLabelText, queryByText } = render(
       <SignInForm onSubmit={() => {}} />
     );
 
-    const email = container.querySelector(
-      'input[name="email"]'
-    ) as HTMLInputElement;
+    const email = getByLabelText('Email');
 
     await wait(() => {
-      fireEvent.change(email, {
-        target: {
-          value: 'testtest.pl',
-        },
-      });
-
+      changeInputValue(email, 'testtest.pl');
       fireEvent.blur(email);
     });
 
@@ -95,21 +66,14 @@ describe('<SignInForm />', () => {
   });
 
   test('should should proper message when password is empty', async () => {
-    const { container, queryByText } = render(
+    const { queryByText, getByLabelText } = render(
       <SignInForm onSubmit={() => {}} />
     );
 
-    const password = container.querySelector(
-      'input[name="password"]'
-    ) as HTMLInputElement;
+    const password = getByLabelText('Password');
 
     await wait(() => {
-      fireEvent.change(password, {
-        target: {
-          value: '',
-        },
-      });
-
+      fireEvent.focus(password);
       fireEvent.blur(password);
     });
 
@@ -117,26 +81,61 @@ describe('<SignInForm />', () => {
   });
 
   test('should should proper message when password is too short', async () => {
-    const { container, queryByText } = render(
+    const { queryByText, getByLabelText } = render(
       <SignInForm onSubmit={() => {}} />
     );
 
-    const password = container.querySelector(
-      'input[name="password"]'
-    ) as HTMLInputElement;
+    const password = getByLabelText('Password');
 
     await wait(() => {
-      fireEvent.change(password, {
-        target: {
-          value: '1234567',
-        },
-      });
-
+      changeInputValue(password, '1234567');
       fireEvent.blur(password);
     });
 
     expect(
       queryByText('Password should be at least 8 characters long.')
     ).toBeTruthy();
+  });
+
+  test('should block submitting when email is not vaild', async () => {
+    const onSubmit = jest.fn();
+    const { container, getByLabelText } = render(
+      <SignInForm onSubmit={onSubmit} />
+    );
+
+    const email = getByLabelText('Email');
+    const password = getByLabelText('Password');
+    const submitBtn = container.querySelector(
+      'button[type="submit"]'
+    ) as HTMLButtonElement;
+
+    await wait(() => {
+      changeInputValue(email, 'badEmailTest.pl');
+      changeInputValue(password, '12345678');
+      fireEvent.click(submitBtn);
+    });
+
+    expect(onSubmit).not.toHaveBeenCalled();
+  });
+
+  test('should block submitting when password is not vaild', async () => {
+    const onSubmit = jest.fn();
+    const { container, getByLabelText } = render(
+      <SignInForm onSubmit={onSubmit} />
+    );
+
+    const email = getByLabelText('Email');
+    const password = getByLabelText('Password');
+    const submitBtn = container.querySelector(
+      'button[type="submit"]'
+    ) as HTMLButtonElement;
+
+    await wait(() => {
+      changeInputValue(email, 'validEmail@test.pl');
+      changeInputValue(password, '1234567');
+      fireEvent.click(submitBtn);
+    });
+
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 });

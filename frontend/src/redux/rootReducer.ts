@@ -1,11 +1,12 @@
 import { combineReducers } from 'redux';
-
 import uiReducer from './UI/UI.reducer';
 import userReducer from './User/user.reducer';
+import notificationsReducer from './Notifications/notifications.reducer';
 
 const rootReducer = combineReducers({
 	UI: uiReducer,
-	user: userReducer
+	user: userReducer,
+	notifications: notificationsReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

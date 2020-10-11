@@ -4,8 +4,15 @@ import {
   CategoryBase,
   CategoryEntry,
   CategoryCollection,
-} from '../common/types/categories';
-import { getEnvironementVariable } from '../helpers/environment';
+} from '../../common/types/categories';
+import {
+  ProductBase,
+  ProductEntry,
+  ProductsCollection,
+  ProductsCollectionMap,
+} from '../../common/types/product';
+import { getEnvironementVariable } from '../../helpers/environment';
+import { getOptionsForCategory } from './queryHelpers';
 
 export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
   return {
@@ -43,35 +50,35 @@ export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
         });
     },
 
-    getProducts(parentCategory: string, subCategory: string): Promise<any> {
-      let query = '';
-
-      if (parentCategory) {
-        query += parentCategory;
-      }
-
-      if (subCategory) {
-        query += parentCategory ? `/${subCategory}` : subCategory;
-      }
-
-      let options: { [key: string]: string } = {};
-
-      if (subCategory && parentCategory) {
-        options = {
-          'fields.category.sys.contentType.sys.id': 'category',
-          'fields.category.fields.categoryTree': query,
-        };
-      } else if (parentCategory && !subCategory) {
-        options = {
-          'fields.rootCategory.sys.contentType.sys.id': 'category',
-          'fields.rootCategory.fields.categoryTree': query,
-        };
-      }
-
-      return client.getEntries({
-        content_type: 'product',
-        ...options,
-      });
+    async getProducts(
+      parentCategory?: string,
+      subCategory?: string
+    ): Promise<ProductsCollectionMap> {
+      const categoryOptions = getOptionsForCategory(
+        parentCategory,
+        subCategory
+      );
+      return client
+        .getEntries<ProductBase>({
+          content_type: 'product',
+          ...categoryOptions,
+        })
+        .then(
+          ({
+            limit,
+            skip,
+            total,
+            items,
+          }: ProductsCollection): ProductsCollectionMap => ({
+            limit,
+            skip,
+            total,
+            items: items.map((product: ProductEntry) => ({
+              id: product.sys.id,
+              ...product.fields,
+            })),
+          })
+        );
     },
   };
 };

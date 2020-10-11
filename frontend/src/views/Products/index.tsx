@@ -1,26 +1,18 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import ContentfulService from '../../services/ContentfulService';
+import ProductsContainer from '../../containers/ProductsContainer';
 
 interface RouteParams {
-  rootCategory: string,
-  subCategory: string
+  rootCategory: string;
+  subCategory: string;
 }
 
 const Products = () => {
-    const { rootCategory, subCategory } = useParams<RouteParams>();
+  const { rootCategory, subCategory } = useParams<RouteParams>();
 
-    console.log(rootCategory, subCategory);
-
-    ContentfulService.getProducts(rootCategory, subCategory).then(res => {
-      console.log(res);
-    })
-
-    return (
-      <div>
-          Products view
-      </div>
-    );
-}
+  return (
+    <ProductsContainer rootCategory={rootCategory} subCategory={subCategory} />
+  );
+};
 
 export default Products;

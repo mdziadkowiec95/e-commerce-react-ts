@@ -1,5 +1,5 @@
-import { ContentfulServiceFactory } from "./ContentfulService";
-import { mockCategories } from '../../tests/mocks/contentful-categories';
+import { ContentfulServiceFactory } from ".";
+import { mockCategories } from '../../../tests/mocks/contentful-categories';
 
 describe('ContentfulService tests', () => {
 	test('dependency injection of client works properly', () => {

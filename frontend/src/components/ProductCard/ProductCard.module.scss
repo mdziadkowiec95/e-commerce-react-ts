@@ -1,0 +1,11 @@
+$hovered-card-shadow: 0 0.1em 1em -0.125em rgba(10, 10, 10, 0.02),
+  0 0px 0 1px rgba(10, 10, 10, 0.02);
+
+.wrap {
+  will-change: box-shadow;
+  transition: box-shadow 0.25s;
+
+  &:hover {
+    box-shadow: $hovered-card-shadow;
+  }
+}

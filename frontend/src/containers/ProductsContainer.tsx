@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useAppDispatch } from '../redux/store';
 import * as ProductsThunks from '../redux/Products/products.thunks';
+import ProductList from '../components/ProductList/ProductList';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/rootReducer';
 
 interface Props {
   rootCategory?: string;
@@ -9,11 +12,12 @@ interface Props {
 
 const ProductsContainer = ({ rootCategory, subCategory }: Props) => {
   const dispatch = useAppDispatch();
+  const productsState = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
     dispatch(ProductsThunks.fetchProducts(rootCategory, subCategory));
   }, [dispatch, rootCategory, subCategory]);
-  return <div></div>;
+  return <ProductList products={productsState.items} />;
 };
 
 export default ProductsContainer;

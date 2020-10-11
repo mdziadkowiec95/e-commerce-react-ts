@@ -4,53 +4,16 @@ import {
   CategoryBase,
   CategoryEntry,
   CategoryCollection,
-} from '../common/types/categories';
+} from '../../common/types/categories';
 import {
   ProductBase,
   ProductEntry,
   ProductsCollection,
   ProductsCollectionMap,
-} from '../common/types/product';
-import { getEnvironementVariable } from '../helpers/environment';
+} from '../../common/types/product';
+import { getEnvironementVariable } from '../../helpers/environment';
+import { getOptionsForCategory } from './queryHelpers';
 
-export const getCategoryQuery = (
-  parentCategory?: string,
-  subCategory?: string
-): string => {
-  let query = '';
-
-  if (parentCategory) {
-    query += parentCategory;
-  }
-
-  if (subCategory) {
-    query += parentCategory ? `/${subCategory}` : subCategory;
-  }
-
-  return query;
-};
-
-export const getOptionsForCategory = (
-  parentCategory?: string,
-  subCategory?: string
-): { [key: string]: string } => {
-  const query = getCategoryQuery(parentCategory, subCategory);
-  let options: { [key: string]: string } = {};
-
-  if (subCategory && parentCategory) {
-    options = {
-      'fields.category.sys.contentType.sys.id': 'category',
-      'fields.category.fields.categoryTree': query,
-    };
-  } else if (parentCategory && !subCategory) {
-    options = {
-      'fields.rootCategory.sys.contentType.sys.id': 'category',
-      'fields.rootCategory.fields.categoryTree': query,
-    };
-  }
-
-  return options;
-};
 export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
   return {
     getClient(): ContentfulClientApi {

@@ -38,7 +38,10 @@ const NotificationBar = ({ notifications, onNotificationDelete }: Props) => {
   if (!notifications || notifications.length <= 0) return null;
 
   return (
-    <div className={`pt-4 ${styles.wrap}`}>
+    <div
+      className={`pt-4 ${styles.wrap}`}
+      data-testid="NotificationBar_wrapper"
+    >
       <div className="container">
         {notifications.map(({ id, type, message }: Notification) => (
           <div

@@ -73,10 +73,30 @@ export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
             limit,
             skip,
             total,
-            items: items.map((product: ProductEntry) => ({
-              id: product.sys.id,
-              ...product.fields,
-            })),
+            items: items.map((product: ProductEntry) => {
+              const {
+                productName,
+                slug,
+                productDescription,
+                image,
+                category,
+                sku,
+                price,
+                quantity,
+              } = product.fields;
+
+              return {
+                id: product.sys.id,
+                productName,
+                slug,
+                productDescription,
+                image,
+                category,
+                sku,
+                price,
+                quantity,
+              };
+            }),
           })
         );
     },

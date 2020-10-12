@@ -1,5 +1,7 @@
+import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Product } from '../../common/types/product';
+import ButtonIcon from '../ButtonIcon';
 import styles from './ProductCard.module.scss';
 
 interface Props {
@@ -35,9 +37,15 @@ const ProductCard = ({ data }: Props) => {
         </div>
 
         <div className="content">
-          <button className="button is-primary is-fullwidth is-rounded">
+          <ButtonIcon
+            isFullwidth
+            icon={faCartPlus}
+            onClick={() => {
+              console.log(data.id);
+            }}
+          >
             Add to cart
-          </button>
+          </ButtonIcon>
         </div>
       </div>
     </div>

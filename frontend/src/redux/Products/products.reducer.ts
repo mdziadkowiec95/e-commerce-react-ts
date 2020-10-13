@@ -1,9 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { ProductsCollectionMap } from "../../common/types/product";
+import { Product, ProductsCollectionMap } from "../../common/types/product";
 
 export interface ProductsState {
 	isLoading: boolean;
-	items: any[];
+	items: Product[];
 }
 
 const initialState = {

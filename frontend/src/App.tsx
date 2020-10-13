@@ -4,6 +4,7 @@ import './scss/app.scss';
 import Products from './views/Products';
 import * as UIThunks from './redux/UI/UI.thunks';
 import * as UserThunks from './redux/User/user.thunks';
+import * as CartThunks from './redux/Cart/cart.thunks';
 import NavbarContainer from './containers/NavbarContainer';
 import RegistrationView from './views/Registration';
 import { setAuthTokenHeader } from './helpers/setAuthTokenHeader';

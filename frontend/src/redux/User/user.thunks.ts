@@ -6,6 +6,7 @@ import { User } from "../../common/types/user";
 import { setAuthTokenHeader } from "../../helpers/setAuthTokenHeader";
 import { handleServerError } from "../../helpers/errorHandling";
 import { ServerError } from "../../common/types/errors";
+import * as CartThunks from '../Cart/cart.thunks';
 
 export const registerUser = (
 	userData: RegistrationFormValues,
@@ -42,9 +43,11 @@ export const authenticateUser = (): AppThunk => async (dispatch: AppDispatch): P
 		const user: User = res.data;
 
 		dispatch(UserActions.authenticateSuccess(user));
+		dispatch(CartThunks.loadPersistedCartForAuthUser());
 	} catch (error) {
 		console.error(error);
 		dispatch(UserActions.authenticateError());
+		dispatch(CartThunks.loadPersistedCartForGuest());
 	}
 };
 

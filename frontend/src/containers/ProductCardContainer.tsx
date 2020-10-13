@@ -2,7 +2,7 @@ import React from 'react';
 import { mapProductImageForCart } from '../common/product/mapProductImage';
 import { Product } from '../common/types/product';
 import ProductCard from '../components/ProductCard';
-import { CartActions } from '../redux/Cart/cart.reducer';
+import * as CartThunks from '../redux/Cart/cart.thunks';
 import { useAppDispatch } from '../redux/store';
 
 interface Props {
@@ -24,7 +24,7 @@ const ProductCardContainer = ({ product }: Props) => {
         productName,
       }: Product) => {
         dispatch(
-          CartActions.addProductToCart({
+          CartThunks.addProductToCart({
             id,
             image: mapProductImageForCart(image),
             slug,

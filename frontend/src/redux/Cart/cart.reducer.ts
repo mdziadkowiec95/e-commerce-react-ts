@@ -24,8 +24,11 @@ const cartSlice = createSlice({
 			} else {
 				state.products[existingProductIndex].quantity += 1;
 			}
+		},
+		loadPersistedCart: (state, { payload }: PayloadAction<ProductInCart[]>) => {
+			state.products = payload;
 		}
-	}
+	},
 });
 
 // Export actions

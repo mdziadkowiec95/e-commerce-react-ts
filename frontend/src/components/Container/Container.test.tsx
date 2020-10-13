@@ -22,7 +22,6 @@ describe('<Container /> tests', () => {
 
   test('should have proper classNames', () => {
     const { container } = render(<Container />);
-
     const containerEl = container.querySelector('div') as HTMLDivElement;
 
     expect(containerEl).toHaveClass('container', 'px-5');

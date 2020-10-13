@@ -1,9 +1,11 @@
 import { AppDispatch, AppThunk } from "../store";
 import { UserActions } from "./user.reducer";
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosError, AxiosResponse } from 'axios';
 import { RegistrationFormValues } from "../../components/RegistrationForm";
 import { User } from "../../common/types/user";
 import { setAuthTokenHeader } from "../../helpers/setAuthTokenHeader";
+import { handleServerError } from "../../helpers/errorHandling";
+import { ServerError } from "../../common/types/errors";
 
 export const registerUser = (
 	userData: RegistrationFormValues,
@@ -12,7 +14,7 @@ export const registerUser = (
 	try {
 		dispatch(UserActions.registerUserBegin());
 
-		const res: AxiosResponse<{ token: string; }> = await axios.post('/api/users/register', userData);
+		const res = await axios.post<{ token: string; }>('/api/users/register', userData);
 		const token = res.data.token;
 
 		localStorage.setItem('authToken', token);
@@ -20,9 +22,15 @@ export const registerUser = (
 		dispatch(UserActions.registerUserSuccess());
 		onSuccessCb();
 	} catch (error) {
-		console.error(error);
-		dispatch(UserActions.registerUserError());
-	}
+		if (error && error.response) {
+			const axiosError = error as AxiosError<ServerError>;
+
+			handleServerError(axiosError, dispatch);
+
+			console.error(error);
+			dispatch(UserActions.registerUserError());
+		}
+	};
 };
 
 export const authenticateUser = (): AppThunk => async (dispatch: AppDispatch): Promise<void> => {

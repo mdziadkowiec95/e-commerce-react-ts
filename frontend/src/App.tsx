@@ -8,6 +8,8 @@ import NavbarContainer from './containers/NavbarContainer';
 import RegistrationView from './views/Registration';
 import { setAuthTokenHeader } from './helpers/setAuthTokenHeader';
 import store from './redux/store';
+import NotificationBarContainer from './containers/NotificationBarContainer';
+import Container from './components/Container';
 
 setAuthTokenHeader(localStorage.getItem('authToken'));
 
@@ -20,8 +22,9 @@ const App = () => {
   return (
     <div className="App">
       <Router>
+        <NotificationBarContainer />
         <NavbarContainer />
-        <div className="container">
+        <Container>
           <Switch>
             <Route
               exact
@@ -37,7 +40,7 @@ const App = () => {
               component={Products}
             />
           </Switch>
-        </div>
+        </Container>
       </Router>
     </div>
   );

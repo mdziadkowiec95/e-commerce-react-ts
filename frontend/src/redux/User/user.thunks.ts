@@ -7,6 +7,7 @@ import { setAuthTokenHeader } from "../../helpers/setAuthTokenHeader";
 import { handleServerError } from "../../helpers/errorHandling";
 import { ServerError } from "../../common/types/errors";
 import * as CartThunks from '../Cart/cart.thunks';
+import { CartActions } from "../Cart/cart.reducer";
 
 export const registerUser = (
 	userData: RegistrationFormValues,
@@ -76,4 +77,5 @@ export const logoutUser = (): AppThunk => async (dispatch: AppDispatch): Promise
 	localStorage.removeItem('authToken');
 
 	dispatch(UserActions.logoutUser());
+	dispatch(CartActions.clearCart());
 };

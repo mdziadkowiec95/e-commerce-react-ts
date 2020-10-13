@@ -7,7 +7,7 @@
     "start": "concurrently \"npm run start:server\" \"npm run start:client\"",
     "start:client": "npm start --prefix frontend",
     "start:server": "node -r dotenv/config server/server.js",
-    "dev": "nodemon -r dotenv/config server/server.js",
+    "dev": "nodemon --require dotenv/config server/server.js",
     "test": "npm run test:ci --prefix frontend && npm run test:server",
     "test:server": "jest ./server",
     "build": "npm run build --prefix frontend"

@@ -6,18 +6,18 @@ import productsReducer from './Products/products.reducer';
 import cartReducer from './Cart/cart.reducer';
 
 export enum ReducerName {
-	UI = 'UI',
-	User = 'user',
-	Notifications = 'notifications',
-	Products = 'products'
+  UI = 'UI',
+  User = 'user',
+  Notifications = 'notifications',
+  Products = 'products'
 }
 
 const rootReducer = combineReducers({
-	UI: uiReducer,
-	user: userReducer,
-	notifications: notificationsReducer,
-	products: productsReducer,
-	cart: cartReducer
+  UI: uiReducer,
+  user: userReducer,
+  notifications: notificationsReducer,
+  products: productsReducer,
+  cart: cartReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

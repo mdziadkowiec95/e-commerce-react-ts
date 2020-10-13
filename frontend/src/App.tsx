@@ -1,16 +1,15 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './scss/app.scss';
-import Products from './views/Products';
 import * as UIThunks from './redux/UI/UI.thunks';
 import * as UserThunks from './redux/User/user.thunks';
-import * as CartThunks from './redux/Cart/cart.thunks';
-import NavbarContainer from './containers/NavbarContainer';
-import RegistrationView from './views/Registration';
-import { setAuthTokenHeader } from './helpers/setAuthTokenHeader';
 import store from './redux/store';
+import NavbarContainer from './containers/NavbarContainer';
 import NotificationBarContainer from './containers/NotificationBarContainer';
+import RegistrationView from './views/Registration';
+import Products from './views/Products';
 import Container from './components/Container';
+import { setAuthTokenHeader } from './helpers/setAuthTokenHeader';
 
 setAuthTokenHeader(localStorage.getItem('authToken'));
 

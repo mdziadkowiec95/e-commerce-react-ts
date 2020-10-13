@@ -19,7 +19,7 @@ interface Props {
   onNotificationDelete: (id: string) => void;
 }
 
-const getNotificationClass = (type: NotificationType) => {
+export const getNotificationClass = (type?: NotificationType) => {
   switch (type) {
     case NotificationType.Success:
       return 'is-success';

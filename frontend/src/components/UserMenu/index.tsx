@@ -1,11 +1,15 @@
 import { faArrowRight, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
+import React, { RefObject, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import { User } from '../../common/types/user';
 import UserAvatar from './UserAvatar';
 import SignInContainer from '../../containers/SignInContainer';
+import { useClickOutside } from '../../hooks/useClickOutside';
+import { useEscape } from '../../hooks/useEscape';
+import { useToggle } from '../../hooks/useToggle';
+import { useMouseLeaveDelay } from '../../hooks/useMouseLeaveDelay';
 
 interface Props {
   isAuth: boolean;
@@ -15,18 +19,46 @@ interface Props {
 }
 
 const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
-  const [isActive, setIsActive] = useState(false);
+  // A flag which indicates whether the component has been opened using click/keyboard events (not mouseenter/mouseleave)
+  const [isClicked, setIsClicked] = useToggle();
+
+  // A flag which indicates whether the component is active (visible). All applied events.
+  const [isActive, toggleIsActive] = useToggle();
+
+  const close = useCallback(() => {
+    setIsClicked(false);
+    toggleIsActive(false);
+  }, [toggleIsActive, setIsClicked]);
+  const containerRef = useClickOutside(close);
+
+  useEscape(close);
+
+  const handleUserButtonIconClick = (): void => {
+    setIsClicked(true);
+    toggleIsActive(true);
+  };
+
+  const {
+    createMouseEnterHandler,
+    createMouseLeaveHandler,
+  } = useMouseLeaveDelay(1500);
+
+  const handleMouseEnter = createMouseEnterHandler(() => toggleIsActive(true));
+  const handleMouseLeave = createMouseLeaveHandler(() => {
+    if (!isClicked) toggleIsActive(false);
+  });
 
   const dropdownClassName = cn('dropdown', 'is-hoverable', 'is-right', {
     'is-active': isActive,
   });
 
-  const handleUserButtonIconClick = (): void => {
-    setIsActive(!isActive);
-  };
-
   return (
-    <div className={dropdownClassName}>
+    <div
+      className={dropdownClassName}
+      ref={containerRef as RefObject<HTMLDivElement>}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div className="dropdown-trigger">
         <button
           className="button reset-button"
@@ -84,7 +116,7 @@ const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
                   top: '0',
                   right: '0',
                 }}
-                onClick={() => setIsActive(false)}
+                onClick={() => toggleIsActive(false)}
               >
                 <FontAwesomeIcon icon={faArrowRight} size="2x" />
               </button>

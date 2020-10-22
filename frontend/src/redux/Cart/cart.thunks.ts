@@ -53,7 +53,6 @@ export const addProductToCart = (product: ProductInCart): AppThunk => async (dis
 
 export const loadPersistedCartForGuest = (): AppThunk => async (dispatch, getState) => {
   try {
-
     const persistedCartData: ProductInCart[] = getCartFromLocalStorage();
 
     console.log('guest user cart data', persistedCartData);

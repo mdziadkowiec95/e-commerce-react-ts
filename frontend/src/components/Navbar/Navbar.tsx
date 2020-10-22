@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
 import NavCategoryDropdown from './NavCategoryDropdown';
 import { UICategoriesState } from '../../redux/UI/UI.reducer';
 import { NavCategory } from '../../common/types/categories';
 import UserMenu from '../UserMenu';
 import { User } from '../../common/types/user';
+import { useToggle } from '../../hooks/useToggle';
+import cn from 'classnames';
 
 interface Props {
   categories: UICategoriesState;
@@ -17,6 +19,7 @@ interface Props {
 }
 
 const Navbar = ({ categories, user, logoutUser }: Props) => {
+  const [isOpen, setIsOpen] = useToggle();
   const renderNavCategories = (categoriesState: UICategoriesState) => {
     const navCategories = categoriesState.data;
 
@@ -42,11 +45,14 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
 
         <Link
           role="button"
-          className="navbar-burger burger"
+          className={cn('navbar-burger burger', { 'is-active': isOpen })}
           aria-label="menu"
           aria-expanded="false"
           data-target="navbarBasicExample"
-          onClick={(e) => e.preventDefault()}
+          onClick={(e: MouseEvent<HTMLAnchorElement>) => {
+            e.preventDefault();
+            setIsOpen(!isOpen);
+          }}
           to="/"
         >
           <span aria-hidden="true"></span>
@@ -55,7 +61,10 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
         </Link>
       </div>
 
-      <div id="navbarBasicExample" className="navbar-menu">
+      <div
+        id="navbarBasicExample"
+        className={cn('navbar-menu', { 'is-active': isOpen })}
+      >
         <div className="navbar-start">
           <Link to="/" className="navbar-item">
             Home

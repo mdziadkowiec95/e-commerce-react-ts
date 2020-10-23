@@ -62,6 +62,7 @@ describe('NavCategoryDropdown tests', () => {
       .closest('a')
       ?.getAttribute('href');
     expect(rootCategoryLinkHref).toEqual('/products/notebooks');
+
     expect(getByTestId('nav-subcategories-wrap').children.length).toEqual(0);
   });
 
@@ -82,13 +83,13 @@ describe('NavCategoryDropdown tests', () => {
     expect(subcategoryLinks[1].textContent).toEqual('Accessories');
   });
 
-  test('clicking on parent category link navigates properly', () => {
-    const { getByText, history } = renderWithRouter(
+  test('clicking on parent category link toogles active class', () => {
+    const { getByText, getByTestId } = renderWithRouter(
       <NavCategoryDropdown category={mockCategoryWithSubcategories} />
     );
 
-    fireEvent.click(getByText(/Notebooks/i));
-    expect(history.location.pathname).toEqual('/products/notebooks');
+    fireEvent.click(getByText('Notebooks'));
+    expect(getByTestId('nav-category-dropdown')).toHaveClass('is-active');
   });
 
   test('clicking on subcategory link navigates properly', () => {

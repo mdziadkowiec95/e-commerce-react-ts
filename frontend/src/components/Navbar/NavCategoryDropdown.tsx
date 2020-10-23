@@ -47,19 +47,23 @@ const NavCategoryDropdown = ({ category }: Props) => {
         data-testid="nav-subcategories-wrap"
         ref={dropdownRef}
       >
-        {category.subcategories?.map((subcategory: NavCategory) => (
-          <Link
-            key={subcategory.id}
-            className="navbar-item"
-            to={`/products/${subcategory.categoryTree}`}
-          >
-            {subcategory.displayName}
-          </Link>
-        ))}
-        <hr className="navbar-divider" />
-        <Link className="navbar-item" to="/products">
-          All {category.displayName.toLowerCase()}
-        </Link>
+        {category.subcategories && category.subcategories.length > 0 && (
+          <>
+            {category.subcategories.map((subcategory: NavCategory) => (
+              <Link
+                key={subcategory.id}
+                className="navbar-item"
+                to={`/products/${subcategory.categoryTree}`}
+              >
+                {subcategory.displayName}
+              </Link>
+            ))}
+            <hr className="navbar-divider" />
+            <Link className="navbar-item" to="/products">
+              All {category.displayName.toLowerCase()}
+            </Link>
+          </>
+        )}
       </div>
     </div>
   ) : null;

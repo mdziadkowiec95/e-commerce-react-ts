@@ -59,7 +59,10 @@ const NavCategoryDropdown = ({ category }: Props) => {
               </Link>
             ))}
             <hr className="navbar-divider" />
-            <Link className="navbar-item" to="/products">
+            <Link
+              className="navbar-item"
+              to={`/products/${category.categoryTree}`}
+            >
               All {category.displayName.toLowerCase()}
             </Link>
           </>

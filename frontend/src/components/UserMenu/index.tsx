@@ -10,6 +10,7 @@ import { useClickOutside } from '../../hooks/useClickOutside';
 import { useEscape } from '../../hooks/useEscape';
 import { useToggle } from '../../hooks/useToggle';
 import { useMouseLeaveDelay } from '../../hooks/useMouseLeaveDelay';
+import ButtonIcon from '../ButtonIcon';
 
 interface Props {
   isAuth: boolean;
@@ -60,23 +61,23 @@ const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
       onMouseLeave={handleMouseLeave}
     >
       <div className="dropdown-trigger">
-        <button
-          className="button reset-button"
-          aria-haspopup="true"
-          aria-controls="dropdown-menu4"
-          onClick={handleUserButtonIconClick}
-        >
-          <span className="icon is-small">
-            {!isLoading && !isAuth ? (
-              <FontAwesomeIcon icon={faUser} />
-            ) : (
+        {!isLoading && !isAuth ? (
+          <ButtonIcon isFullwidth icon={faUser} isTransparent></ButtonIcon>
+        ) : (
+          <button
+            className="button reset-button"
+            aria-haspopup="true"
+            aria-controls="dropdown-menu4"
+            onClick={handleUserButtonIconClick}
+          >
+            <span className="icon is-small">
               <UserAvatar
                 firstName={user?.firstName}
                 lastName={user?.lastName}
               />
-            )}
-          </span>
-        </button>
+            </span>
+          </button>
+        )}
       </div>
 
       {!isLoading ? (

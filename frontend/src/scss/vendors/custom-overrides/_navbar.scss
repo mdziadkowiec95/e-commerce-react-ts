@@ -1,0 +1,16 @@
+.navbar-item {
+  &.has-dropdown {
+    .navbar-dropdown {
+      overflow: hidden;
+      visibility: hidden;
+      transition: height 0.4s;
+    }
+
+    &.is-active {
+      .navbar-dropdown {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  }
+}

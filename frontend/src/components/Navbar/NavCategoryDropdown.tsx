@@ -1,35 +1,27 @@
-import React, { MouseEvent, RefObject, useRef, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { NavCategory } from '../../common/types/categories';
 import { useToggle } from '../../hooks/useToggle';
 import cn from 'classnames';
 import { useClickOutside } from '../../hooks/useClickOutside';
+import { useScrollHeight } from '../../hooks/useScrollHeight';
 
 interface Props {
   category: NavCategory | undefined;
 }
 
 const NavCategoryDropdown = ({ category }: Props) => {
-  const dropdownRef = useRef<HTMLDivElement>(null);
   const [isActive, setIsActive] = useToggle();
-  const [dropdownHeight, setDropdownHeight] = useState(0);
+  const [dropdownHeight, dropdownRef] = useScrollHeight<HTMLDivElement>(
+    isActive
+  );
 
   const handleDropdownClick = () => {
     setIsActive(!isActive);
-
-    if (dropdownRef && dropdownRef.current) {
-      const el = dropdownRef.current;
-
-      if (!isActive) {
-        setDropdownHeight(el.scrollHeight);
-      } else {
-        setDropdownHeight(0);
-      }
-    }
   };
-  const containerRef = useClickOutside(() => {
+
+  const containerRef = useClickOutside<HTMLDivElement>(() => {
     setIsActive(false);
-    setDropdownHeight(0);
   });
 
   return category ? (
@@ -39,11 +31,15 @@ const NavCategoryDropdown = ({ category }: Props) => {
       })}
       data-testid="nav-category-dropdown"
       onClick={handleDropdownClick}
-      ref={containerRef as RefObject<HTMLDivElement>}
+      ref={containerRef}
     >
-      <a href="#" className="navbar-link" onClick={void 0}>
+      <Link
+        to={`/products/${category.categoryTree}`}
+        className="navbar-link"
+        onClick={(e) => e.preventDefault()}
+      >
         {category.displayName}
-      </a>
+      </Link>
 
       <div
         style={{ height: `${dropdownHeight}px` }}

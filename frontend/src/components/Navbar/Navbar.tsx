@@ -7,6 +7,7 @@ import UserMenu from '../UserMenu';
 import { User } from '../../common/types/user';
 import { useToggle } from '../../hooks/useToggle';
 import cn from 'classnames';
+import MiniCartContainer from '../../containers/MiniCartContainer';
 
 interface Props {
   categories: UICategoriesState;
@@ -75,6 +76,7 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
+              <MiniCartContainer />
               <UserMenu
                 isAuth={user.isAuth}
                 isLoading={user.isLoading}

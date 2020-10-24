@@ -1,10 +1,11 @@
 import { Asset } from "contentful";
-import ProductConfig from "../../config/product";
-import { MappedProductImage } from "../types/product";
+import { ProductConfig } from "common/config";
+import { MappedProductImage } from "common/types";
 
 export const mapProductImageForCart = (image: Asset[]): MappedProductImage => {
   if (image && image[0]) {
     const { fileName, url } = image[0].fields.file;
+
     return {
       fileName, url
     }

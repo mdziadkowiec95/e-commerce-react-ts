@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react';
 import cn from 'classnames';
-import { Colors } from '../../common/types/bulma';
+import { Colors } from '../../types/bulma';
 import {
   faLongArrowAltRight,
   IconDefinition,

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import MiniCart from '.';
-import { CartState } from '../../redux/Cart/cart.reducer';
+import { CartState } from 'redux/Cart/cart.reducer';
+import MiniCart from './MiniCart';
 
 const cartMock: CartState = {
   products: [],

@@ -1,13 +1,18 @@
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import React, { MouseEvent } from 'react';
-import { CURRENCY } from '../../common/baseConfig/price';
-import { getTotalPrice } from '../../common/prices/getTotalPrice';
-import { ProductInCart } from '../../common/types/product';
-import { User } from '../../common/types/user';
-import { CartState } from '../../redux/Cart/cart.reducer';
-import ButtonIcon from '../ButtonIcon';
-import Popover from '../Popover';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+
+import { CartState } from 'redux/Cart/cart.reducer';
+
+import Popover from 'common/components/Popover';
+import ButtonIcon from 'common/components/ButtonIcon';
+
+import { ProductInCart, User } from 'common/types';
+import { getTotalPrice } from 'common/helpers';
+
 import styles from './MiniCart.module.scss';
+import { BaseConfig } from 'common/config';
+
+const { CURRENCY } = BaseConfig;
 
 interface ButtonProps {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;

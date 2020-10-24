@@ -1,6 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import MiniCart from '../components/MiniCart';
+import MiniCart from 'components/MiniCart/MiniCart';
 import { RootState } from '../redux/rootReducer';
 import { useAppDispatch } from '../redux/store';
 

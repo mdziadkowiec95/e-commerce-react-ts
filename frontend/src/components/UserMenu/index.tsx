@@ -10,7 +10,7 @@ import { useClickOutside } from '../../hooks/useClickOutside';
 import { useEscape } from '../../hooks/useEscape';
 import { useToggle } from '../../hooks/useToggle';
 import { useMouseLeaveDelay } from '../../hooks/useMouseLeaveDelay';
-import ButtonIcon from '../ButtonIcon';
+import ButtonIcon from '../../common/components/ButtonIcon';
 
 interface Props {
   isAuth: boolean;

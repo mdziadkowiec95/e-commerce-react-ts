@@ -1,15 +1,16 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import './scss/app.scss';
-import * as UIThunks from './redux/UI/UI.thunks';
-import * as UserThunks from './redux/User/user.thunks';
-import store from './redux/store';
-import NavbarContainer from './containers/NavbarContainer';
-import NotificationBarContainer from './containers/NotificationBarContainer';
-import RegistrationView from './views/Registration';
-import Products from './views/Products';
-import Container from './components/Container';
-import { setAuthTokenHeader } from './helpers/setAuthTokenHeader';
+import * as UIThunks from 'redux/UI/UI.thunks';
+import * as UserThunks from 'redux/User/user.thunks';
+import store from 'redux/store';
+import NavbarContainer from 'containers/NavbarContainer';
+import NotificationBarContainer from 'containers/NotificationBarContainer';
+import RegistrationView from 'views/Registration';
+import Products from 'views/Products';
+import Container from 'common/components/Container/Container';
+import { setAuthTokenHeader } from 'helpers/setAuthTokenHeader';
+
+import 'scss/app.scss';
 
 setAuthTokenHeader(localStorage.getItem('authToken'));
 
@@ -20,10 +21,11 @@ const App = () => {
   }, []);
 
   return (
-    <div className="App">
+    <>
       <Router>
         <NotificationBarContainer />
         <NavbarContainer />
+
         <Container>
           <Switch>
             <Route
@@ -42,7 +44,7 @@ const App = () => {
           </Switch>
         </Container>
       </Router>
-    </div>
+    </>
   );
 };
 

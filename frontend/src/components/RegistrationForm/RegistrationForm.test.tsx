@@ -1,7 +1,7 @@
-import { fireEvent, render, wait } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import RegistrationForm from '.';
+import { fireEvent, render, wait } from '@testing-library/react';
+import RegistrationForm from './RegistrationForm';
 import { changeInputValue } from '../../../tests/helpers/fireEvent';
 
 describe('<RegistrationForm />', () => {

@@ -3,14 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { RefObject, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
-import { User } from '../../common/types/user';
+import { User } from 'common/types/user';
 import UserAvatar from './UserAvatar';
-import SignInContainer from '../../containers/SignInContainer';
-import { useClickOutside } from '../../hooks/useClickOutside';
-import { useEscape } from '../../hooks/useEscape';
-import { useToggle } from '../../hooks/useToggle';
-import { useMouseLeaveDelay } from '../../hooks/useMouseLeaveDelay';
-import ButtonIcon from '../../common/components/ButtonIcon';
+import SignInContainer from 'containers/SignInContainer';
+import {
+  useClickOutside,
+  useEscape,
+  useToggle,
+  useMouseLeaveDelay,
+} from 'hooks';
+
+import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
 
 interface Props {
   isAuth: boolean;

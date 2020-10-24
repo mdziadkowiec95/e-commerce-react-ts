@@ -5,7 +5,7 @@ import NotificationBar, {
   getNotificationClass,
   Notification,
   NotificationType,
-} from '.';
+} from './NotificationBar';
 
 const testNotificationStyle = (
   type: NotificationType,

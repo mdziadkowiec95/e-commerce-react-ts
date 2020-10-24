@@ -1,12 +1,10 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import MiniCart from 'components/MiniCart/MiniCart';
-import { RootState } from '../redux/rootReducer';
-import { useAppDispatch } from '../redux/store';
+import { RootState } from 'redux/rootReducer';
 
 const MiniCartContainer = () => {
-  const dispatch = useAppDispatch();
-  const { cart, user } = useSelector(({ cart, user }: RootState) => ({
+  const state = useSelector(({ cart, user }: RootState) => ({
     cart,
     user: {
       isAuth: user.isAuth,
@@ -15,7 +13,7 @@ const MiniCartContainer = () => {
     },
   }));
 
-  return <MiniCart cart={cart} user={user} />;
+  return <MiniCart cart={state.cart} user={state.user} />;
 };
 
 export default MiniCartContainer;

@@ -1,7 +1,7 @@
-import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import { Product } from '../../common/types/product';
-import ButtonIcon from '../../common/components/ButtonIcon';
+import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { Product } from 'common/types/product';
+import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
 import styles from './ProductCard.module.scss';
 
 interface Props {

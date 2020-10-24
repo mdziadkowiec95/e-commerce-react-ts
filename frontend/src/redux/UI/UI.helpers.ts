@@ -1,4 +1,4 @@
-import { Category, NavCategories, NavCategory } from "../../common/types/categories";
+import { Category, NavCategories, NavCategory } from 'common/types';
 
 // Map single contentful category entry to extract only needed data
 const mapCategory = (category: Category): NavCategory => {

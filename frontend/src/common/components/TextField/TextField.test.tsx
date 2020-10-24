@@ -1,6 +1,8 @@
 import React, { ChangeEvent, FocusEvent, useState } from 'react';
 import { fireEvent, render, wait } from '@testing-library/react';
-import TextField, { TextFieldType } from '.';
+import TextField, {
+  TextFieldType,
+} from 'common/components/TextField/TextField';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 // Helper component to handle dumb component state

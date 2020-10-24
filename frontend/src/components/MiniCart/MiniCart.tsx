@@ -3,8 +3,8 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 import { CartState } from 'redux/Cart/cart.reducer';
 
-import Popover from 'common/components/Popover';
-import ButtonIcon from 'common/components/ButtonIcon';
+import Popover from 'common/components/Popover/Popover';
+import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
 
 import { ProductInCart, User } from 'common/types';
 import { getTotalPrice } from 'common/helpers';

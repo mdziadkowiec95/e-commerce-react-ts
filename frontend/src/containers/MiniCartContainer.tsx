@@ -1,16 +1,21 @@
-import { connect } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import MiniCart from '../components/MiniCart';
 import { RootState } from '../redux/rootReducer';
-import * as UserThunks from '../redux/User/user.thunks';
+import { useAppDispatch } from '../redux/store';
 
-const mapStateToProps = ({ cart, user }: RootState) => ({
-  cart,
-  user: {
-    isAuth: user.isAuth,
-    isLoading: user.isLoading,
-    user: user.user,
-  },
-});
+const MiniCartContainer = () => {
+  const dispatch = useAppDispatch();
+  const { cart, user } = useSelector(({ cart, user }: RootState) => ({
+    cart,
+    user: {
+      isAuth: user.isAuth,
+      isLoading: user.isLoading,
+      user: user.user,
+    },
+  }));
 
-const mapDispatchToProps = {};
-export default connect(mapStateToProps, mapDispatchToProps)(MiniCart);
+  return <MiniCart cart={cart} user={user} />;
+};
+
+export default MiniCartContainer;

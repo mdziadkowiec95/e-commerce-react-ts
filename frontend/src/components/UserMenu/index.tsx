@@ -42,7 +42,7 @@ const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
   const {
     createMouseEnterHandler,
     createMouseLeaveHandler,
-  } = useMouseLeaveDelay(1500);
+  } = useMouseLeaveDelay(0);
 
   const handleMouseEnter = createMouseEnterHandler(() => toggleIsActive(true));
   const handleMouseLeave = createMouseLeaveHandler(() => {

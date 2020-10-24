@@ -100,6 +100,17 @@ export const ContentfulServiceFactory = (client: ContentfulClientApi) => {
           })
         );
     },
+    /**
+     * @param productIDs  comma separated product IDs like for ex. ''abc123,gsg523',
+     */
+    async getProductsForCart(
+      productIDs: string = '3DVqIYj4dOwwcKu6sgqOgg,4BqrajvA8E6qwgkieoqmqO'
+    ) {
+      return client.getEntries({
+        content_type: 'product',
+        'sys.id[in]': productIDs,
+      });
+    },
   };
 };
 
@@ -108,5 +119,14 @@ const contentfulClient: ContentfulClientApi = createClient({
   environment: 'master',
   accessToken: getEnvironementVariable('REACT_APP_CONTENTFUL_ACCESS_TOKEN'),
 });
+
+contentfulClient
+  .getEntries({
+    content_type: 'product',
+    'sys.id[in]': '3DVqIYj4dOwwcKu6sgqOgg,4BqrajvA8E6qwgkieoqmqO',
+  })
+  .then((res) => {
+    console.log(res);
+  });
 
 export default ContentfulServiceFactory(contentfulClient);

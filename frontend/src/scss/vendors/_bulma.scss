@@ -39,7 +39,9 @@
 @import '~bulma/sass/components/navbar.sass';
 @import '~bulma/sass/components/dropdown.sass';
 @import '~bulma/sass/components/card.sass';
+@import '~bulma/sass/components/media.sass';
 
 // Bulma custom overrides
 @import './custom-overrides/buttons';
 @import './custom-overrides/navbar';
+@import './custom-overrides/dropdowns';

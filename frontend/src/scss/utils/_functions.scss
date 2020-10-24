@@ -1,0 +1,3 @@
+@function getEasing($name) {
+  @return map-get($easings, $name);
+}

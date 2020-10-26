@@ -10,11 +10,19 @@
 
 .contentWrap {
   width: 300px;
-}
 
-.itemWrap {
-  display: flex;
-  align-items: center;
+  .product {
+    display: flex;
+    align-items: center;
+
+    &Content {
+      display: flex;
+    }
+
+    &Price {
+      margin-left: auto;
+    }
+  }
 }
 
 .image {
@@ -53,7 +61,7 @@
     vertical-align: middle;
 
     &.withAnimation {
-      animation: cartIconAnimation 0.5s;
+      animation: cartIconAnimation 0.25s;
     }
   }
 }

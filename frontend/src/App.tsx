@@ -7,6 +7,7 @@ import NavbarContainer from 'containers/NavbarContainer';
 import NotificationBarContainer from 'containers/NotificationBarContainer';
 import RegistrationView from 'views/Registration';
 import Products from 'views/Products';
+import ProductDetails from 'views/ProductDetails/ProductDetails';
 import Container from 'common/components/Container/Container';
 import { setAuthTokenHeader } from 'helpers/setAuthTokenHeader';
 
@@ -40,6 +41,11 @@ const App = () => {
               exact
               path="/products/:rootCategory?/:subCategory?"
               component={Products}
+            />
+            <Route
+              exact
+              path="/product/:productId"
+              component={ProductDetails}
             />
           </Switch>
         </Container>

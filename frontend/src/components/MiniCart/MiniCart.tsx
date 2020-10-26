@@ -8,32 +8,38 @@ import Popover from 'common/components/Popover/Popover';
 import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
 
 import { ProductInCart, User } from 'common/types';
-import { getTotalPrice } from 'common/helpers';
+
+import { Device, getTotalPrice } from 'common/helpers';
 
 import styles from './MiniCart.module.scss';
 import { BaseConfig } from 'common/config';
-import { forceDoubleToggle } from 'common/helpers/state';
 import { getTotalProductsCount } from 'common/helpers/cart';
+import { Link, useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from 'redux/rootReducer';
 
 const cn = cx.bind(styles);
 
 const { CURRENCY } = BaseConfig;
 
 interface ButtonProps {
-  itemsInCart: number;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
-const MiniCartButton = ({ onClick, itemsInCart }: ButtonProps) => {
+const MiniCartButton = ({ onClick }: ButtonProps) => {
+  const newCount = useSelector((state: RootState) =>
+    getTotalProductsCount(state.cart.products)
+  );
+  const history = useHistory();
   const [prevCount, setPrevCount] = useState(0);
-  const [isAnimated, setIsAnimated] = useState(true);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    if (itemsInCart !== prevCount) {
-      setPrevCount(itemsInCart);
-      forceDoubleToggle(setIsAnimated, isAnimated);
+    if (newCount !== prevCount) {
+      setPrevCount(newCount);
+      setIsAnimating(true);
     }
-  }, [itemsInCart, isAnimated, prevCount]);
+  }, [newCount, isAnimating, prevCount]);
 
   const getCounterText = (count: number) => {
     if (count > 99) return '99+';
@@ -42,7 +48,7 @@ const MiniCartButton = ({ onClick, itemsInCart }: ButtonProps) => {
   };
 
   const wrapperClassName = cn('iconWrap', {
-    isBigger: itemsInCart > 99,
+    isBigger: newCount > 99,
   });
 
   return (
@@ -51,16 +57,24 @@ const MiniCartButton = ({ onClick, itemsInCart }: ButtonProps) => {
         isFullwidth
         icon={faShoppingCart}
         isTransparent
-        onClick={onClick}
+        onClick={(e) => {
+          if (!Device.isMin().isDesktop()) {
+            history.push('/cart');
+          }
+          onClick(e);
+        }}
         className="no-margin-icon"
       >
-        {itemsInCart !== 0 && (
+        {newCount !== 0 && (
           <div
             className={cn('counter', {
-              withAnimation: isAnimated,
+              withAnimation: isAnimating,
             })}
+            onAnimationEnd={() => {
+              setIsAnimating(false);
+            }}
           >
-            {getCounterText(itemsInCart)}
+            {getCounterText(newCount)}
           </div>
         )}
       </ButtonIcon>
@@ -79,29 +93,25 @@ interface Props {
 
 const MiniCart = ({ cart, user }: Props) => {
   return (
-    <Popover
-      alignRight
-      buttonComponent={({ onClick }) => (
-        <MiniCartButton
-          onClick={onClick}
-          itemsInCart={getTotalProductsCount(cart.products)}
-        />
-      )}
-      mouseDelay={0}
-    >
+    <Popover alignRight buttonComponent={MiniCartButton} mouseDelay={0}>
       <div className={styles.contentWrap}>
         {cart.products.length > 0 ? (
           cart.products.map((product: ProductInCart) => (
-            <div key={product.id} className={`media ${styles.itemWrap}`}>
+            <div key={product.id} className={`media ${styles.product}`}>
               <div className="media-left">
                 <figure
                   className={`image is-48x48 ${styles.image}`}
                   style={{ backgroundImage: `url(${product.image.url})` }}
                 ></figure>
               </div>
-              <div className="media-content">
-                <p className="title is-6">{product.productName}</p>
-                <span>
+              <div className={`media-content ${styles.productContent}`}>
+                <Link
+                  to={`/product/${product.slug}`}
+                  className="title is-6 mb-0"
+                >
+                  {product.productName} <span>({product.quantity})</span>
+                </Link>
+                <span className={styles.productPrice}>
                   {product.price * product.quantity} {CURRENCY}
                 </span>
               </div>

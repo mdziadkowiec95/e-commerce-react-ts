@@ -65,7 +65,12 @@ const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
     >
       <div className="dropdown-trigger">
         {!isLoading && !isAuth ? (
-          <ButtonIcon isFullwidth icon={faUser} isTransparent></ButtonIcon>
+          <ButtonIcon
+            isFullwidth
+            icon={faUser}
+            isTransparent
+            onClick={handleUserButtonIconClick}
+          ></ButtonIcon>
         ) : (
           <button
             className="button reset-button"

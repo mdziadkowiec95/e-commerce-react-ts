@@ -1,5 +1,6 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useEffect, useState } from 'react';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import cx from 'classnames/bind';
 
 import { CartState } from 'redux/Cart/cart.reducer';
 
@@ -11,21 +12,61 @@ import { getTotalPrice } from 'common/helpers';
 
 import styles from './MiniCart.module.scss';
 import { BaseConfig } from 'common/config';
+import { forceDoubleToggle } from 'common/helpers/state';
+import { getTotalProductsCount } from 'common/helpers/cart';
+
+const cn = cx.bind(styles);
 
 const { CURRENCY } = BaseConfig;
 
 interface ButtonProps {
+  itemsInCart: number;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
-const MiniCartButton = ({ onClick }: ButtonProps) => (
-  <ButtonIcon
-    isFullwidth
-    icon={faShoppingCart}
-    isTransparent
-    onClick={onClick}
-  ></ButtonIcon>
-);
+const MiniCartButton = ({ onClick, itemsInCart }: ButtonProps) => {
+  const [prevCount, setPrevCount] = useState(0);
+  const [isAnimated, setIsAnimated] = useState(true);
+
+  useEffect(() => {
+    if (itemsInCart !== prevCount) {
+      setPrevCount(itemsInCart);
+      forceDoubleToggle(setIsAnimated, isAnimated);
+    }
+  }, [itemsInCart, isAnimated, prevCount]);
+
+  const getCounterText = (count: number) => {
+    if (count > 99) return '99+';
+
+    return count;
+  };
+
+  const wrapperClassName = cn('iconWrap', {
+    isBigger: itemsInCart > 99,
+  });
+
+  return (
+    <div className={wrapperClassName}>
+      <ButtonIcon
+        isFullwidth
+        icon={faShoppingCart}
+        isTransparent
+        onClick={onClick}
+        className="no-margin-icon"
+      >
+        {itemsInCart !== 0 && (
+          <div
+            className={cn('counter', {
+              withAnimation: isAnimated,
+            })}
+          >
+            {getCounterText(itemsInCart)}
+          </div>
+        )}
+      </ButtonIcon>
+    </div>
+  );
+};
 
 interface Props {
   cart: CartState;
@@ -38,13 +79,20 @@ interface Props {
 
 const MiniCart = ({ cart, user }: Props) => {
   return (
-    <Popover alignRight buttonComponent={MiniCartButton} mouseDelay={0}>
+    <Popover
+      alignRight
+      buttonComponent={({ onClick }) => (
+        <MiniCartButton
+          onClick={onClick}
+          itemsInCart={getTotalProductsCount(cart.products)}
+        />
+      )}
+      mouseDelay={0}
+    >
       <div className={styles.contentWrap}>
-        {cart &&
-          cart.products &&
-          cart.products.length > 0 &&
+        {cart.products.length > 0 ? (
           cart.products.map((product: ProductInCart) => (
-            <div className={`media ${styles.itemWrap}`}>
+            <div key={product.id} className={`media ${styles.itemWrap}`}>
               <div className="media-left">
                 <figure
                   className={`image is-48x48 ${styles.image}`}
@@ -58,7 +106,10 @@ const MiniCart = ({ cart, user }: Props) => {
                 </span>
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <p className="title is-6">You don't have any products in cart.</p>
+        )}
         <p>
           Summary: {getTotalPrice(cart.products)} {CURRENCY}
         </p>

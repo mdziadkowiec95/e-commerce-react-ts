@@ -1,7 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import MiniCart from 'components/MiniCart/MiniCart';
+import MiniCart, { MiniCartButton } from 'components/MiniCart/MiniCart';
 import { RootState } from 'redux/rootReducer';
+import Popover from 'common/components/Popover/Popover';
+import { getTotalProductsCount } from 'common/helpers/cart';
 
 const MiniCartContainer = () => {
   const state = useSelector(({ cart, user }: RootState) => ({
@@ -13,7 +15,18 @@ const MiniCartContainer = () => {
     },
   }));
 
-  return <MiniCart cart={state.cart} user={state.user} />;
+  return (
+    <Popover
+      alignRight
+      buttonComponent={MiniCartButton}
+      buttonProps={{
+        productsInCart: getTotalProductsCount(state.cart.products),
+      }}
+      mouseDelay={200}
+    >
+      <MiniCart cart={state.cart} user={state.user} />
+    </Popover>
+  );
 };
 
 export default MiniCartContainer;

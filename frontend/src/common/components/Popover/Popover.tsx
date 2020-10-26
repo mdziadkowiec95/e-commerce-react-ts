@@ -29,13 +29,15 @@ interface Props {
   alignRight?: boolean;
   mouseDelay?: number;
   buttonComponent?: ElementType;
+  buttonProps?: { [k: string]: any };
 }
 
 const Popover: FC<Props> = ({
   children,
   alignRight = false,
-  mouseDelay = 1500,
-  buttonComponent: ButtonComponent = DefaultButtonComponent,
+  mouseDelay = 500,
+  buttonComponent: ButtonComponent = DefaultButtonComponent, // A component to be rendered as Popover's button
+  buttonProps, // You can use this prop if you need to pass some props to the button component
 }) => {
   // A flag which indicates whether the component has been opened using click/keyboard events (not mouseenter/mouseleave)
   const [isClicked, setIsClicked] = useToggle();
@@ -80,7 +82,7 @@ const Popover: FC<Props> = ({
       onMouseLeave={handleMouseLeave}
     >
       <div className="dropdown-trigger">
-        <ButtonComponent onClick={handleUserButtonIconClick} />
+        <ButtonComponent onClick={handleUserButtonIconClick} {...buttonProps} />
 
         <div className="dropdown-menu" role="menu">
           <div className="dropdown-content">

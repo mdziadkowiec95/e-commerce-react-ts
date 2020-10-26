@@ -1,22 +1,17 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { Link, useHistory } from 'react-router-dom';
 import cx from 'classnames/bind';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 
 import { CartState } from 'redux/Cart/cart.reducer';
 
-import Popover from 'common/components/Popover/Popover';
-import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
-
+import { BaseConfig } from 'common/config';
 import { ProductInCart, User } from 'common/types';
-
 import { Device, getTotalPrice } from 'common/helpers';
 
+import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
+
 import styles from './MiniCart.module.scss';
-import { BaseConfig } from 'common/config';
-import { getTotalProductsCount } from 'common/helpers/cart';
-import { Link, useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { RootState } from 'redux/rootReducer';
 
 const cn = cx.bind(styles);
 
@@ -24,22 +19,20 @@ const { CURRENCY } = BaseConfig;
 
 interface ButtonProps {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
+  productsInCart: any;
 }
 
-const MiniCartButton = ({ onClick }: ButtonProps) => {
-  const newCount = useSelector((state: RootState) =>
-    getTotalProductsCount(state.cart.products)
-  );
+export const MiniCartButton = ({ onClick, productsInCart }: ButtonProps) => {
   const history = useHistory();
   const [prevCount, setPrevCount] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    if (newCount !== prevCount) {
-      setPrevCount(newCount);
+    if (productsInCart !== prevCount) {
+      setPrevCount(productsInCart);
       setIsAnimating(true);
     }
-  }, [newCount, isAnimating, prevCount]);
+  }, [productsInCart, isAnimating, prevCount]);
 
   const getCounterText = (count: number) => {
     if (count > 99) return '99+';
@@ -48,7 +41,7 @@ const MiniCartButton = ({ onClick }: ButtonProps) => {
   };
 
   const wrapperClassName = cn('iconWrap', {
-    isBigger: newCount > 99,
+    isBigger: productsInCart > 99,
   });
 
   return (
@@ -65,16 +58,14 @@ const MiniCartButton = ({ onClick }: ButtonProps) => {
         }}
         className="no-margin-icon"
       >
-        {newCount !== 0 && (
+        {productsInCart !== 0 && (
           <div
             className={cn('counter', {
               withAnimation: isAnimating,
             })}
-            onAnimationEnd={() => {
-              setIsAnimating(false);
-            }}
+            onAnimationEnd={() => setIsAnimating(false)}
           >
-            {getCounterText(newCount)}
+            {getCounterText(productsInCart)}
           </div>
         )}
       </ButtonIcon>
@@ -82,7 +73,7 @@ const MiniCartButton = ({ onClick }: ButtonProps) => {
   );
 };
 
-interface Props {
+interface MiniCartProps {
   cart: CartState;
   user: {
     isLoading: boolean;
@@ -91,40 +82,35 @@ interface Props {
   };
 }
 
-const MiniCart = ({ cart, user }: Props) => {
+const MiniCart = ({ cart, user }: MiniCartProps) => {
   return (
-    <Popover alignRight buttonComponent={MiniCartButton} mouseDelay={0}>
-      <div className={styles.contentWrap}>
-        {cart.products.length > 0 ? (
-          cart.products.map((product: ProductInCart) => (
-            <div key={product.id} className={`media ${styles.product}`}>
-              <div className="media-left">
-                <figure
-                  className={`image is-48x48 ${styles.image}`}
-                  style={{ backgroundImage: `url(${product.image.url})` }}
-                ></figure>
-              </div>
-              <div className={`media-content ${styles.productContent}`}>
-                <Link
-                  to={`/product/${product.slug}`}
-                  className="title is-6 mb-0"
-                >
-                  {product.productName} <span>({product.quantity})</span>
-                </Link>
-                <span className={styles.productPrice}>
-                  {product.price * product.quantity} {CURRENCY}
-                </span>
-              </div>
+    <div className={styles.contentWrap}>
+      {cart.products.length > 0 ? (
+        cart.products.map((product: ProductInCart) => (
+          <div key={product.id} className={`media ${styles.product}`}>
+            <div className="media-left">
+              <figure
+                className={`image is-48x48 ${styles.image}`}
+                style={{ backgroundImage: `url(${product.image.url})` }}
+              ></figure>
             </div>
-          ))
-        ) : (
-          <p className="title is-6">You don't have any products in cart.</p>
-        )}
-        <p>
-          Summary: {getTotalPrice(cart.products)} {CURRENCY}
-        </p>
-      </div>
-    </Popover>
+            <div className={`media-content ${styles.productContent}`}>
+              <Link to={`/product/${product.slug}`} className="title is-6 mb-0">
+                {product.productName} <span>({product.quantity})</span>
+              </Link>
+              <span className={styles.productPrice}>
+                {product.price * product.quantity} {CURRENCY}
+              </span>
+            </div>
+          </div>
+        ))
+      ) : (
+        <p className="title is-6">You don't have any products in cart.</p>
+      )}
+      <p>
+        Summary: {getTotalPrice(cart.products)} {CURRENCY}
+      </p>
+    </div>
   );
 };
 

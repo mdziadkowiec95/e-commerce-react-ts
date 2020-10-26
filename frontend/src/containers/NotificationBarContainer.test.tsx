@@ -1,10 +1,10 @@
 import React from 'react';
 import { fireEvent, wait } from '@testing-library/react';
 import { renderWithMockStore } from '../../tests/helpers/mockStore';
-import { NotificationType } from '../components/NotificationBar';
+import { NotificationType } from '../components/NotificationBar/NotificationBar';
 import NotificationBarContainer from './NotificationBarContainer';
 import { ReducerName } from '../redux/rootReducer';
-import { NotificationsActions } from '../redux/Notifications/notifications.reducer';
+import { NotificationsActions } from 'redux/Notifications/notifications.reducer';
 
 describe('<NotificationBarContainer /> tests', () => {
   test('should NOT render any notification if state is empty', () => {

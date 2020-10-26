@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { fireEvent, render, wait } from '@testing-library/react';
-import SignInForm from '.';
+import SignInForm from 'components/SignInForm/SignInForm';
 import { changeInputValue } from '../../../tests/helpers/fireEvent';
 
 describe('<SignInForm />', () => {

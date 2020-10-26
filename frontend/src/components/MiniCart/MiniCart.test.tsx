@@ -1,7 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import MiniCart from '.';
-import { CartState } from '../../redux/Cart/cart.reducer';
+import { CartState } from 'redux/Cart/cart.reducer';
+import { ReducerName } from 'redux/rootReducer';
+import { renderWithMockStore } from '../../../tests/helpers/mockStore';
+import MiniCart from './MiniCart';
 
 const cartMock: CartState = {
   products: [],
@@ -16,7 +17,12 @@ const userMock = {
 
 describe('<MiniCart />', () => {
   test('should render without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<MiniCart cart={cartMock} user={userMock} />, div);
+    renderWithMockStore(<MiniCart cart={cartMock} user={userMock} />, {
+      reducer: ReducerName.Cart,
+      initialState: {
+        isLoading: false,
+        products: [],
+      },
+    });
   });
 });

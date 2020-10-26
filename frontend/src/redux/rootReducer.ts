@@ -1,15 +1,16 @@
 import { combineReducers } from 'redux';
-import uiReducer from './UI/UI.reducer';
-import userReducer from './User/user.reducer';
-import notificationsReducer from './Notifications/notifications.reducer';
-import productsReducer from './Products/products.reducer';
-import cartReducer from './Cart/cart.reducer';
+import uiReducer from 'redux/UI/UI.reducer';
+import userReducer from 'redux/User/user.reducer';
+import notificationsReducer from 'redux/Notifications/notifications.reducer';
+import productsReducer from 'redux/Products/products.reducer';
+import cartReducer from 'redux/Cart/cart.reducer';
 
 export enum ReducerName {
   UI = 'UI',
   User = 'user',
   Notifications = 'notifications',
-  Products = 'products'
+  Products = 'products',
+  Cart = 'cart'
 }
 
 const rootReducer = combineReducers({

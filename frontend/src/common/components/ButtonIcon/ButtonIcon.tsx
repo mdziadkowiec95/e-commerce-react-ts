@@ -1,6 +1,6 @@
 import React, { FC, MouseEvent } from 'react';
 import cn from 'classnames';
-import { Colors } from '../../common/types/bulma';
+import { Colors } from 'common/types';
 import {
   faLongArrowAltRight,
   IconDefinition,
@@ -12,6 +12,7 @@ interface Props {
   isFullwidth?: boolean;
   variant?: Colors;
   icon?: IconDefinition;
+  className?: string;
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
@@ -20,6 +21,7 @@ const ButtonIcon: FC<Props> = ({
   isTransparent,
   variant = Colors.Primary,
   icon = faLongArrowAltRight,
+  className,
   onClick,
   children,
 }) => {
@@ -30,7 +32,8 @@ const ButtonIcon: FC<Props> = ({
     {
       'reset-button': isTransparent,
       'is-fullwidth': isFullwidth,
-    }
+    },
+    className
   );
 
   return (

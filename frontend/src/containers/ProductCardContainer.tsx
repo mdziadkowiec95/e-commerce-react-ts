@@ -1,9 +1,9 @@
 import React from 'react';
-import { mapProductImageForCart } from '../common/product/mapProductImage';
-import { Product } from '../common/types/product';
-import ProductCard from '../components/ProductCard';
-import * as CartThunks from '../redux/Cart/cart.thunks';
-import { useAppDispatch } from '../redux/store';
+import { mapProductImageForCart } from 'common/helpers';
+import { Product } from 'common/types/product';
+import ProductCard from 'components/ProductCard/ProductCard';
+import * as CartThunks from 'redux/Cart/cart.thunks';
+import { useAppDispatch } from 'redux/store';
 
 interface Props {
   product: Product;

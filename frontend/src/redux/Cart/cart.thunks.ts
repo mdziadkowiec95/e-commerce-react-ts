@@ -1,5 +1,5 @@
+import { CartConfig } from "common/config";
 import { ProductInCart } from "../../common/types/product";
-import CartConfig from "../../config/cart";
 import { AppThunk } from "../store";
 import { CartActions } from "./cart.reducer";
 

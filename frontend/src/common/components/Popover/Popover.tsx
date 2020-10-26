@@ -1,11 +1,14 @@
 import React, { ElementType, FC, MouseEvent, useCallback } from 'react';
-import { useClickOutside } from '../../hooks/useClickOutside';
-import { useEscape } from '../../hooks/useEscape';
-import { useMouseLeaveDelay } from '../../hooks/useMouseLeaveDelay';
-import { useToggle } from '../../hooks/useToggle';
+
 import cn from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import {
+  useClickOutside,
+  useEscape,
+  useMouseLeaveDelay,
+  useToggle,
+} from 'hooks';
 
 interface DefaultButtonProps {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;

@@ -1,6 +1,6 @@
-import ContentfulService from "../../services/ContentfulService";
-import { AppThunk } from "../store";
-import { ProductsActions } from "./products.reducer";
+import ContentfulService from 'services/ContentfulService';
+import { AppThunk } from 'redux/store';
+import { ProductsActions } from './products.reducer';
 
 export const fetchProducts = (parentCategory?: string, subCategory?: string): AppThunk => async dispatch => {
   try {

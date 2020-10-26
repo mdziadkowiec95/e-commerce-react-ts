@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react';
 import React from 'react';
-import Container from '.';
+import Container from './Container';
 
 describe('<Container /> tests', () => {
   test('should render without crashes', () => {

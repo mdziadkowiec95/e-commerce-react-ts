@@ -1,13 +1,13 @@
 import React, { MouseEvent } from 'react';
 import { Link } from 'react-router-dom';
-import NavCategoryDropdown from './NavCategoryDropdown';
-import { UICategoriesState } from '../../redux/UI/UI.reducer';
-import { NavCategory } from '../../common/types/categories';
-import UserMenu from '../UserMenu';
-import { User } from '../../common/types/user';
-import { useToggle } from '../../hooks/useToggle';
 import cn from 'classnames';
-import MiniCartContainer from '../../containers/MiniCartContainer';
+import { UICategoriesState } from 'redux/UI/UI.reducer';
+import { NavCategory } from 'common/types';
+import UserMenu from 'components/UserMenu/UserMenu';
+import { User } from 'common/types/user';
+import { useToggle } from 'hooks';
+import MiniCartContainer from 'containers/MiniCartContainer';
+import NavCategoryDropdown from './NavCategoryDropdown';
 
 interface Props {
   categories: UICategoriesState;

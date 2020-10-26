@@ -9,7 +9,8 @@ export enum ReducerName {
   UI = 'UI',
   User = 'user',
   Notifications = 'notifications',
-  Products = 'products'
+  Products = 'products',
+  Cart = 'cart'
 }
 
 const rootReducer = combineReducers({

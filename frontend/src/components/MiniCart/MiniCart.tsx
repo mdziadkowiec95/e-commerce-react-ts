@@ -1,7 +1,7 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import cx from 'classnames/bind';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { CartState } from 'redux/Cart/cart.reducer';
 
@@ -53,13 +53,13 @@ export const MiniCartButton = ({
         isFullwidth
         icon={faShoppingCart}
         isTransparent
+        noMarginIcon
         onClick={(e) => {
           if (!Device.isMin().isDesktop()) {
             history.push('/cart');
           }
           onClick(e);
         }}
-        className="no-margin-icon"
       >
         {console.log('re-rendered btn')}
         {productsTotalCount !== 0 && (
@@ -100,6 +100,7 @@ const MiniCart = ({ cart }: MiniCartProps) => {
               <span className={styles.productPrice}>
                 {product.price * product.quantity} {CURRENCY}
               </span>
+              <ButtonIcon icon={faTrash} />
             </div>
           </div>
         ))

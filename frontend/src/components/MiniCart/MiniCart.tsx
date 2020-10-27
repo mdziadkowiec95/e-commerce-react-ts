@@ -6,7 +6,7 @@ import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { CartState } from 'redux/Cart/cart.reducer';
 
 import { BaseConfig } from 'common/config';
-import { ProductInCart, User } from 'common/types';
+import { ProductInCart } from 'common/types';
 import { Device, getTotalPrice } from 'common/helpers';
 
 import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
@@ -19,20 +19,23 @@ const { CURRENCY } = BaseConfig;
 
 interface ButtonProps {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
-  productsInCart: any;
+  productsTotalCount: number;
 }
 
-export const MiniCartButton = ({ onClick, productsInCart }: ButtonProps) => {
+export const MiniCartButton = ({
+  onClick,
+  productsTotalCount,
+}: ButtonProps) => {
   const history = useHistory();
   const [prevCount, setPrevCount] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
-    if (productsInCart !== prevCount) {
-      setPrevCount(productsInCart);
+    if (productsTotalCount !== prevCount) {
+      setPrevCount(productsTotalCount);
       setIsAnimating(true);
     }
-  }, [productsInCart, isAnimating, prevCount]);
+  }, [productsTotalCount, isAnimating, prevCount]);
 
   const getCounterText = (count: number) => {
     if (count > 99) return '99+';
@@ -41,7 +44,7 @@ export const MiniCartButton = ({ onClick, productsInCart }: ButtonProps) => {
   };
 
   const wrapperClassName = cn('iconWrap', {
-    isBigger: productsInCart > 99,
+    isBigger: productsTotalCount > 99,
   });
 
   return (
@@ -58,14 +61,15 @@ export const MiniCartButton = ({ onClick, productsInCart }: ButtonProps) => {
         }}
         className="no-margin-icon"
       >
-        {productsInCart !== 0 && (
+        {console.log('re-rendered btn')}
+        {productsTotalCount !== 0 && (
           <div
             className={cn('counter', {
               withAnimation: isAnimating,
             })}
             onAnimationEnd={() => setIsAnimating(false)}
           >
-            {getCounterText(productsInCart)}
+            {getCounterText(productsTotalCount)}
           </div>
         )}
       </ButtonIcon>
@@ -75,14 +79,9 @@ export const MiniCartButton = ({ onClick, productsInCart }: ButtonProps) => {
 
 interface MiniCartProps {
   cart: CartState;
-  user: {
-    isLoading: boolean;
-    isAuth: boolean;
-    user: User | null;
-  };
 }
 
-const MiniCart = ({ cart, user }: MiniCartProps) => {
+const MiniCart = ({ cart }: MiniCartProps) => {
   return (
     <div className={styles.contentWrap}>
       {cart.products.length > 0 ? (

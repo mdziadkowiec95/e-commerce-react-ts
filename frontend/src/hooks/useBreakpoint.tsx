@@ -1,8 +1,9 @@
 import { isBreakpoint, isMinBreakpoint } from 'common/helpers';
 import { useCallback, useState } from 'react';
 import { useEventListener } from './useEventListener';
-import { debounce } from 'lodash-es';
 import { Breakpoint } from 'common/types';
+
+import debounce from 'lodash/debounce';
 
 interface UseBreakpointsState {
   isMobile: boolean;

@@ -1,7 +1,6 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { CartState } from 'redux/Cart/cart.reducer';
-import { ReducerName } from 'redux/rootReducer';
-import { renderWithMockStore } from '../../../tests/helpers/mockStore';
 import MiniCart from './MiniCart';
 
 const cartMock: CartState = {
@@ -9,20 +8,12 @@ const cartMock: CartState = {
   isLoading: false,
 };
 
-const userMock = {
-  isAuth: false,
-  isLoading: true,
-  user: null,
-};
-
 describe('<MiniCart />', () => {
   test('should render without crashing', () => {
-    renderWithMockStore(<MiniCart cart={cartMock} user={userMock} />, {
-      reducer: ReducerName.Cart,
-      initialState: {
-        isLoading: false,
-        products: [],
-      },
-    });
+    const div = document.createElement('div');
+    ReactDOM.render(
+      <MiniCart cart={cartMock} onNavigateToProduct={() => {}} />,
+      div
+    );
   });
 });

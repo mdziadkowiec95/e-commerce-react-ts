@@ -3,7 +3,7 @@ import React from 'react';
 import { Meta, Story } from '@storybook/react/types-6-0';
 import ButtonIcon, { ButtonIconProps, ButtonIconSize } from './ButtonIcon';
 import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
-import { Colors } from 'common/types';
+import { Variant } from 'common/types';
 
 export const Default: Story<ButtonIconProps> = () => <ButtonIcon />;
 
@@ -36,23 +36,23 @@ export const Large: Story<ButtonIconProps> = () => (
 );
 
 export const Link: Story<ButtonIconProps> = () => (
-  <ButtonIcon icon={faCartPlus} variant={Colors.Link}/>
+  <ButtonIcon icon={faCartPlus} variant={Variant.Link} />
 );
 
 export const Info: Story<ButtonIconProps> = () => (
-  <ButtonIcon icon={faCartPlus} variant={Colors.Info}/>
+  <ButtonIcon icon={faCartPlus} variant={Variant.Info} />
 );
 
 export const Success: Story<ButtonIconProps> = () => (
-  <ButtonIcon icon={faCartPlus} variant={Colors.Success}/>
+  <ButtonIcon icon={faCartPlus} variant={Variant.Success} />
 );
 
 export const Warning: Story<ButtonIconProps> = () => (
-  <ButtonIcon icon={faCartPlus} variant={Colors.Warning}/>
+  <ButtonIcon icon={faCartPlus} variant={Variant.Warning} />
 );
 
 export const Danger: Story<ButtonIconProps> = () => (
-  <ButtonIcon icon={faCartPlus} variant={Colors.Danger}/>
+  <ButtonIcon icon={faCartPlus} variant={Variant.Danger} />
 );
 
 export default {

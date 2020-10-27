@@ -4,3 +4,4 @@ export { useEventListener } from './useEventListener';
 export { useMouseLeaveDelay } from './useMouseLeaveDelay';
 export { useScrollHeight } from './useScrollHeight';
 export { useToggle } from './useToggle';
+export { useBreakpoint } from './useBreakpoint';

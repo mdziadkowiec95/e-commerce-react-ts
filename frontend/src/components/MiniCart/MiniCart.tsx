@@ -6,29 +6,35 @@ import { faShoppingCart, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { CartState } from 'redux/Cart/cart.reducer';
 
 import { BaseConfig } from 'common/config';
-import { ProductInCart } from 'common/types';
-import { Device, getTotalPrice } from 'common/helpers';
+import { ProductInCart, Variant } from 'common/types';
+import { getTotalPrice } from 'common/helpers';
 
-import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
+import ButtonIcon, {
+  ButtonIconSize,
+} from 'common/components/ButtonIcon/ButtonIcon';
 
 import styles from './MiniCart.module.scss';
+import { useBreakpoint } from 'hooks';
 
 const cn = cx.bind(styles);
 
 const { CURRENCY } = BaseConfig;
 
 interface ButtonProps {
+  id: string;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
   productsTotalCount: number;
 }
 
 export const MiniCartButton = ({
+  id,
   onClick,
   productsTotalCount,
 }: ButtonProps) => {
   const history = useHistory();
   const [prevCount, setPrevCount] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const { isMinScreen } = useBreakpoint();
 
   useEffect(() => {
     if (productsTotalCount !== prevCount) {
@@ -54,14 +60,15 @@ export const MiniCartButton = ({
         icon={faShoppingCart}
         isTransparent
         noMarginIcon
+        ariaControls={id}
+        ariaHasPopup
         onClick={(e) => {
-          if (!Device.isMin().isDesktop()) {
+          if (!isMinScreen.isDesktop) {
             history.push('/cart');
           }
           onClick(e);
         }}
       >
-        {console.log('re-rendered btn')}
         {productsTotalCount !== 0 && (
           <div
             className={cn('counter', {
@@ -79,9 +86,10 @@ export const MiniCartButton = ({
 
 interface MiniCartProps {
   cart: CartState;
+  onNavigateToProduct: (id: string) => void;
 }
 
-const MiniCart = ({ cart }: MiniCartProps) => {
+const MiniCart = ({ cart, onNavigateToProduct }: MiniCartProps) => {
   return (
     <div className={styles.contentWrap}>
       {cart.products.length > 0 ? (
@@ -93,14 +101,26 @@ const MiniCart = ({ cart }: MiniCartProps) => {
                 style={{ backgroundImage: `url(${product.image.url})` }}
               ></figure>
             </div>
-            <div className={`media-content ${styles.productContent}`}>
-              <Link to={`/product/${product.slug}`} className="title is-6 mb-0">
-                {product.productName} <span>({product.quantity})</span>
-              </Link>
-              <span className={styles.productPrice}>
-                {product.price * product.quantity} {CURRENCY}
-              </span>
-              <ButtonIcon icon={faTrash} />
+            <div className="media-content">
+              <div className={styles.productContent}>
+                <Link
+                  to={`/product/${product.slug}`}
+                  className="title is-6 mb-0"
+                  onClick={() => onNavigateToProduct(product.id)}
+                >
+                  {product.productName} <span>({product.quantity})</span>
+                </Link>
+                <span className={styles.productPrice}>
+                  {product.price * product.quantity} {CURRENCY}
+                </span>
+              </div>
+              <div className={styles.productActions}>
+                <ButtonIcon
+                  icon={faTrash}
+                  size={ButtonIconSize.Small}
+                  variant={Variant.Danger}
+                />
+              </div>
             </div>
           </div>
         ))

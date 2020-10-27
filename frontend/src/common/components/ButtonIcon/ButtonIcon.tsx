@@ -1,51 +1,56 @@
 import React, { FC, MouseEvent } from 'react';
 import cn from 'classnames';
-import { Colors } from 'common/types';
 import {
   faLongArrowAltRight,
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { Variant } from 'common/types';
+
 export enum ButtonIconSize {
   Small = 'is-small',
   Normal = 'is-normal',
   Medium = 'is-medium',
-  Large = 'is-large'
+  Large = 'is-large',
 }
 
 export interface ButtonIconProps {
   size?: ButtonIconSize;
   isTransparent?: boolean;
   isFullwidth?: boolean;
-  variant?: Colors;
+  variant?: Variant;
   noMarginIcon?: boolean;
   icon?: IconDefinition;
   className?: string;
+  ariaHasPopup?: boolean;
+  ariaControls?: string;
   onClick?: (e: MouseEvent<HTMLButtonElement>) => void;
 }
 
 export const getIconSize = (size: ButtonIconSize) => {
-  switch(size) {
+  switch (size) {
     case ButtonIconSize.Small:
-      return 'md';
+      return '1x';
     case ButtonIconSize.Medium:
-      return 'md';
+      return '1x';
     case ButtonIconSize.Large:
       return 'lg';
-    default: 
-      return null;
+    default:
+      return;
   }
-}
+};
 
 const ButtonIcon: FC<ButtonIconProps> = ({
   size = ButtonIconSize.Normal,
   isFullwidth,
   isTransparent,
-  variant = Colors.Primary,
+  variant = Variant.Primary,
   icon = faLongArrowAltRight,
   noMarginIcon,
   className,
+  ariaHasPopup = false,
+  ariaControls,
   onClick,
   children,
 }) => {
@@ -63,7 +68,12 @@ const ButtonIcon: FC<ButtonIconProps> = ({
   );
 
   return (
-    <button className={ButtonClassName} onClick={onClick}>
+    <button
+      className={ButtonClassName}
+      aria-haspopup={ariaHasPopup}
+      aria-controls={ariaControls}
+      onClick={onClick}
+    >
       {children && <span>{children}</span>}
       <span className="icon">
         <FontAwesomeIcon icon={icon} size={getIconSize(size)} />

@@ -1,9 +1,13 @@
 import React from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
+
 import MiniCart, { MiniCartButton } from 'components/MiniCart/MiniCart';
+
 import { RootState } from 'redux/rootReducer';
-import Popover from 'common/components/Popover/Popover';
 import * as fromCart from 'redux/Cart/cart.selectors';
+
+import Popover from 'common/components/Popover/Popover';
+import { useBreakpoint } from 'hooks';
 
 const MiniCartContainer = () => {
   const cartState = useSelector(
@@ -15,16 +19,26 @@ const MiniCartContainer = () => {
     shallowEqual
   );
 
+  const { isMinScreen } = useBreakpoint();
+
   return (
     <Popover
       alignRight
+      isHoverable={false}
       buttonComponent={MiniCartButton}
       buttonProps={{
         productsTotalCount: cartState.productsTotalCount,
       }}
+      onButtonClick={() => {
+        console.log('Dispatch hide Navbar');
+      }}
       mouseDelay={200}
+      id="MiniCartDropdown"
+      disabled={!isMinScreen.isDesktop}
     >
-      <MiniCart cart={cartState} />
+      {(closePopover) => (
+        <MiniCart cart={cartState} onNavigateToProduct={closePopover} />
+      )}
     </Popover>
   );
 };

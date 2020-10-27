@@ -10,8 +10,10 @@ import Products from 'views/Products';
 import ProductDetails from 'views/ProductDetails/ProductDetails';
 import Container from 'common/components/Container/Container';
 import { setAuthTokenHeader } from 'helpers/setAuthTokenHeader';
+import cn from 'classnames';
 
 import 'scss/app.scss';
+import { Device } from 'common/helpers';
 
 setAuthTokenHeader(localStorage.getItem('authToken'));
 
@@ -22,7 +24,11 @@ const App = () => {
   }, []);
 
   return (
-    <>
+    <div
+      className={cn({
+        'is-touch-device': Device.isTouchDevice(),
+      })}
+    >
       <Router>
         <NotificationBarContainer />
         <NavbarContainer />
@@ -50,7 +56,7 @@ const App = () => {
           </Switch>
         </Container>
       </Router>
-    </>
+    </div>
   );
 };
 

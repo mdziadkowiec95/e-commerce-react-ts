@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^7.2.1",
     "@types/classnames": "^2.2.10",
     "@types/jest": "^24.9.1",
+    "@types/lodash": "^4.14.162",
     "@types/moxios": "^0.4.9",
     "@types/node": "^12.12.62",
     "@types/react": "^16.9.49",
@@ -21,11 +22,13 @@
     "@types/redux-mock-store": "^1.0.2",
     "@types/uuid": "^8.3.0",
     "@types/yup": "^0.29.7",
+    "@welldone-software/why-did-you-render": "^5.0.0",
     "axios": "^0.20.0",
     "bulma": "^0.9.0",
     "classnames": "^2.2.6",
     "contentful": "^7.14.6",
     "formik": "^2.1.6",
+    "lodash": "^4.17.20",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -45,7 +48,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "test:ci": "npm run test -- --coverage --watchAll=false",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "storybook": "start-storybook -p 6006 -s public",
+    "build-storybook": "build-storybook -s public"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -64,7 +69,16 @@
     ]
   },
   "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@storybook/addon-actions": "^6.0.27",
+    "@storybook/addon-essentials": "^6.0.27",
+    "@storybook/addon-links": "^6.0.27",
+    "@storybook/node-logger": "^6.0.27",
+    "@storybook/preset-create-react-app": "^3.1.4",
+    "@storybook/react": "^6.0.27",
+    "babel-loader": "^8.1.0",
     "moxios": "^0.4.0",
+    "react-is": "^17.0.1",
     "redux-mock-store": "^1.5.4"
   }
 }

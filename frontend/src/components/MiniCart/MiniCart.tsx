@@ -86,10 +86,15 @@ export const MiniCartButton = ({
 
 interface MiniCartProps {
   cart: CartState;
-  onNavigateToProduct: (id: string) => void;
+  onRemoveProduct: (id: string) => void;
+  onNavigateToProduct?: (id: string) => void;
 }
 
-const MiniCart = ({ cart, onNavigateToProduct }: MiniCartProps) => {
+const MiniCart = ({
+  cart,
+  onRemoveProduct,
+  onNavigateToProduct,
+}: MiniCartProps) => {
   return (
     <div className={styles.contentWrap}>
       {cart.products.length > 0 ? (
@@ -106,7 +111,9 @@ const MiniCart = ({ cart, onNavigateToProduct }: MiniCartProps) => {
                 <Link
                   to={`/product/${product.slug}`}
                   className="title is-6 mb-0"
-                  onClick={() => onNavigateToProduct(product.id)}
+                  onClick={() => {
+                    if (onNavigateToProduct) onNavigateToProduct(product.id);
+                  }}
                 >
                   {product.productName} <span>({product.quantity})</span>
                 </Link>
@@ -119,6 +126,9 @@ const MiniCart = ({ cart, onNavigateToProduct }: MiniCartProps) => {
                   icon={faTrash}
                   size={ButtonIconSize.Small}
                   variant={Variant.Danger}
+                  onClick={() => {
+                    onRemoveProduct(product.id);
+                  }}
                 />
               </div>
             </div>

@@ -3,13 +3,16 @@ import { shallowEqual, useSelector } from 'react-redux';
 
 import MiniCart, { MiniCartButton } from 'components/MiniCart/MiniCart';
 
+import { useAppDispatch } from 'redux/store';
 import { RootState } from 'redux/rootReducer';
 import * as fromCart from 'redux/Cart/cart.selectors';
+import { removeProductFromCart } from 'redux/Cart/cart.thunks';
 
 import Popover from 'common/components/Popover/Popover';
 import { useBreakpoint } from 'hooks';
 
 const MiniCartContainer = () => {
+  const dispatch = useAppDispatch();
   const cartState = useSelector(
     (state: RootState) => ({
       isLoading: fromCart.getIsLoading(state),
@@ -18,6 +21,10 @@ const MiniCartContainer = () => {
     }),
     shallowEqual
   );
+
+  const handleRemoveProduct = (id: string) => {
+    dispatch(removeProductFromCart(id));
+  };
 
   const { isMinScreen } = useBreakpoint();
 
@@ -37,7 +44,11 @@ const MiniCartContainer = () => {
       disabled={!isMinScreen.isDesktop}
     >
       {(closePopover) => (
-        <MiniCart cart={cartState} onNavigateToProduct={closePopover} />
+        <MiniCart
+          cart={cartState}
+          onRemoveProduct={handleRemoveProduct}
+          onNavigateToProduct={closePopover}
+        />
       )}
     </Popover>
   );

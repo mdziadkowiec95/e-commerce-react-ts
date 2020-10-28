@@ -24,6 +24,13 @@ const cartSlice = createSlice({
         state.products[existingProductIndex].quantity += 1;
       }
     },
+    removeProductFromCart: (state, { payload }: PayloadAction<{ id: string }>) => {
+      const productInCartIndex = state.products.findIndex((product: ProductInCart) => product.id === payload.id);
+
+      if (productInCartIndex !== -1) {
+        state.products.splice(productInCartIndex, 1);
+      }
+    },
     loadPersistedCart: (state, { payload }: PayloadAction<ProductInCart[]>) => {
       state.products = payload;
     },

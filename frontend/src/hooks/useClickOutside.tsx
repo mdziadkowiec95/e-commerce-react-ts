@@ -2,7 +2,8 @@ import { RefObject, useRef } from 'react';
 import { useEventListener } from './useEventListener';
 
 export const useClickOutside = <T extends any>(
-  callback: () => void
+  callback: () => void,
+  isTrueClickMode = false
 ): RefObject<T> => {
   const elRef = useRef<T>(null);
 
@@ -12,14 +13,16 @@ export const useClickOutside = <T extends any>(
     if (
       elRef &&
       elRef.current &&
-      !(elRef.current as HTMLElement).contains(target) &&
-      document.contains(target)
+      !(elRef.current as HTMLElement).contains(target)
     ) {
       callback();
     }
   };
 
-  useEventListener('click', handler as EventListener);
+  useEventListener(
+    !isTrueClickMode ? 'mousedown' : 'click',
+    handler as EventListener
+  );
 
   return elRef;
 };

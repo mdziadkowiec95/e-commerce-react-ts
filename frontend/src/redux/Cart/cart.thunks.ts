@@ -35,6 +35,7 @@ export const getCartFromLocalStorage = (): ProductInCart[] => {
 export const resetCartInLocalStorage = () => {
   localStorage.removeItem(CartConfig.CART_ITEMS_LOCAL_STORAGE_KEY);
 }
+
 export const addProductToCart = (product: ProductInCart): AppThunk => async (dispatch, getState) => {
   try {
     const isAuth: boolean = getState().user.isAuth;
@@ -50,6 +51,14 @@ export const addProductToCart = (product: ProductInCart): AppThunk => async (dis
     console.error(error);
   }
 };
+
+export const removeProductFromCart = (id: string): AppThunk => async (dispatch) => {
+  try {
+    dispatch(CartActions.removeProductFromCart({ id }));
+  } catch (error) {
+    console.error(error);
+  }
+}
 
 export const loadPersistedCartForGuest = (): AppThunk => async (dispatch, getState) => {
   try {

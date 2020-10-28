@@ -2,7 +2,6 @@ import React, { ElementType, FC, MouseEvent, useCallback } from 'react';
 
 import cn from 'classnames';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 import {
@@ -11,6 +10,7 @@ import {
   useMouseLeaveDelay,
   useToggle,
 } from 'hooks';
+import ButtonIcon from '../ButtonIcon/ButtonIcon';
 
 interface DefaultButtonProps {
   id: string;
@@ -18,14 +18,12 @@ interface DefaultButtonProps {
 }
 
 const DefaultButtonComponent = ({ onClick, id }: DefaultButtonProps) => (
-  <button
-    className="button reset-button"
-    aria-haspopup="true"
-    aria-controls={id}
+  <ButtonIcon
+    icon={faCaretDown}
     onClick={onClick}
-  >
-    <FontAwesomeIcon icon={faCaretDown} />
-  </button>
+    ariaHasPopup
+    ariaControls={id}
+  />
 );
 
 interface Props {
@@ -37,7 +35,7 @@ interface Props {
   buttonProps?: { [k: string]: any };
   disabled?: boolean;
   onButtonClick?: () => void;
-  children(fn: () => void): JSX.Element;
+  children: ((fn: () => void) => JSX.Element) | JSX.Element;
 }
 
 const Popover: FC<Props> = ({
@@ -112,7 +110,9 @@ const Popover: FC<Props> = ({
         <div className="dropdown-menu" role="menu" id={id}>
           <div className="dropdown-content">
             <div className="dropdown-item has-text-centered">
-              {children(handleClosePopover)}
+              {typeof children === 'function'
+                ? children(handleClosePopover)
+                : children}
             </div>
           </div>
         </div>

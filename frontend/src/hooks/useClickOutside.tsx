@@ -7,10 +7,13 @@ export const useClickOutside = <T extends any>(
   const elRef = useRef<T>(null);
 
   const handler = (e: MouseEvent): void => {
+    const target = e.target as HTMLElement;
+
     if (
       elRef &&
       elRef.current &&
-      !(elRef.current as HTMLElement).contains(e.target as HTMLElement)
+      !(elRef.current as HTMLElement).contains(target) &&
+      document.contains(target)
     ) {
       callback();
     }

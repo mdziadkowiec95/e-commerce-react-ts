@@ -79,11 +79,6 @@ const Popover: FC<Props> = ({
     if (!isClicked) toggleIsActive(false);
   });
 
-  const handleClosePopover = () => {
-    toggleIsActive(false);
-    setIsClicked(false);
-  };
-
   const dropdownClassName = cn('dropdown', {
     'is-hoverable': isHoverable,
     'is-right': alignRight,
@@ -110,9 +105,7 @@ const Popover: FC<Props> = ({
         <div className="dropdown-menu" role="menu" id={id}>
           <div className="dropdown-content">
             <div className="dropdown-item has-text-centered">
-              {typeof children === 'function'
-                ? children(handleClosePopover)
-                : children}
+              {typeof children === 'function' ? children(close) : children}
             </div>
           </div>
         </div>

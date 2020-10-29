@@ -7,8 +7,19 @@ export interface UICategoriesState {
   error: any;
 }
 
+export enum ActiveMenu {
+  Nav = 'nav',
+  User = 'user'
+}
+
+export interface ActiveMenus {
+  nav: boolean;
+  user: boolean;
+};
+
 interface UIState {
   categories: UICategoriesState;
+  activeMenus: ActiveMenus;
 }
 
 const initialState: UIState = {
@@ -16,6 +27,23 @@ const initialState: UIState = {
     isLoading: false,
     data: {},
     error: null
+  },
+  activeMenus: {
+    nav: false,
+    user: false,
+  }
+};
+
+// Toggle targeted menu and close other menus if any is open
+const handleToggleMenu = (state: UIState, payload: { isActive: boolean, menu: ActiveMenu }) => {
+  const toggledMenu = payload.menu;
+
+  for (const menu in state.activeMenus) {
+    if (menu === toggledMenu) {
+      state.activeMenus[menu] = payload.isActive;
+    } else if (payload.isActive) {
+      state.activeMenus[menu as keyof ActiveMenus] = false;
+    }
   }
 };
 
@@ -33,6 +61,9 @@ const uiSlice = createSlice({
     fetchCategoriesError: ({ categories }, { payload }: PayloadAction<any>) => {
       categories.isLoading = false;
       categories.error = payload;
+    },
+    toggleNavMenu: (state, { payload }: PayloadAction<{ isActive: boolean, menu: ActiveMenu }>) => {
+      handleToggleMenu(state, payload);
     }
   }
 });

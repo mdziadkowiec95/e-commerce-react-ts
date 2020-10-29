@@ -13,6 +13,7 @@ import { setAuthTokenHeader } from 'helpers/setAuthTokenHeader';
 import cn from 'classnames';
 
 import 'scss/app.scss';
+
 import { Device } from 'common/helpers';
 
 setAuthTokenHeader(localStorage.getItem('authToken'));

@@ -14,3 +14,9 @@
     }
   }
 }
+
+.navbar-burger {
+  @include until($desktop) {
+    margin-left: 0;
+  }
+}

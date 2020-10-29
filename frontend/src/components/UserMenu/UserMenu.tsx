@@ -1,5 +1,4 @@
 import { faArrowRight, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { RefObject, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
@@ -13,26 +12,39 @@ import {
   useMouseLeaveDelay,
 } from 'hooks';
 
-import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
+import ButtonIcon, {
+  ButtonIconSize,
+} from 'common/components/ButtonIcon/ButtonIcon';
+
+import './UserMenu.scss';
+import { isMinBreakpoint } from 'common/helpers';
+import { Breakpoint } from 'common/types';
 
 interface Props {
+  isActive: boolean;
   isAuth: boolean;
   isLoading: boolean;
   user: User | null;
   onLogout: () => Promise<void> | void;
+  toggleIsActive: (isActive: boolean) => void;
 }
 
-const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
+const UserMenu = ({
+  isActive,
+  isLoading,
+  isAuth,
+  user,
+  onLogout,
+  toggleIsActive,
+}: Props) => {
   // A flag which indicates whether the component has been opened using click/keyboard events (not mouseenter/mouseleave)
   const [isClicked, setIsClicked] = useToggle();
 
-  // A flag which indicates whether the component is active (visible). All applied events.
-  const [isActive, toggleIsActive] = useToggle();
-
   const close = useCallback(() => {
     setIsClicked(false);
-    toggleIsActive(false);
-  }, [toggleIsActive, setIsClicked]);
+    if (isActive) toggleIsActive(false);
+  }, [isActive, toggleIsActive, setIsClicked]);
+
   const containerRef = useClickOutside(close);
 
   useEscape(close);
@@ -47,14 +59,23 @@ const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
     createMouseLeaveHandler,
   } = useMouseLeaveDelay(0);
 
-  const handleMouseEnter = createMouseEnterHandler(() => toggleIsActive(true));
+  const handleMouseEnter = createMouseEnterHandler(() => {
+    if (!isAuth && isMinBreakpoint(Breakpoint.Desktop)) toggleIsActive(true);
+  });
   const handleMouseLeave = createMouseLeaveHandler(() => {
-    if (!isClicked) toggleIsActive(false);
+    if (!isAuth && !isClicked && isMinBreakpoint(Breakpoint.Desktop))
+      toggleIsActive(false);
   });
 
-  const dropdownClassName = cn('dropdown', 'is-hoverable', 'is-right', {
-    'is-active': isActive,
-  });
+  const dropdownClassName = cn(
+    'dropdown',
+    'user-menu',
+    // 'is-hoverable',
+    'is-right',
+    {
+      'is-active': isActive,
+    }
+  );
 
   return (
     <div
@@ -90,10 +111,22 @@ const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
 
       {!isLoading ? (
         !isAuth ? (
-          <div className="dropdown-menu" id="dropdown-menu4" role="menu">
+          <div
+            className="dropdown-menu non-auth-menu"
+            id="dropdown-menu4"
+            role="menu"
+          >
             <div className="dropdown-content">
-              <div className="dropdown-item has-text-centered">
+              <ButtonIcon
+                icon={faArrowRight}
+                size={ButtonIconSize.Large}
+                isTransparent
+                onClick={close}
+                className="close-button non-auth"
+              ></ButtonIcon>
+              <div className={cn('dropdown-item', 'has-text-centered')}>
                 <SignInContainer />
+
                 <p className="mb-2">Don't have acoount yet?</p>
 
                 <Link
@@ -106,34 +139,18 @@ const UserMenu = ({ isLoading, isAuth, user, onLogout }: Props) => {
             </div>
           </div>
         ) : (
-          <div
-            className="box"
-            style={{
-              position: 'fixed',
-              top: 0,
-              right: isActive ? '0' : '-300px',
-              // height: '100%',
-              width: '300px',
-              transition: 'all .25s ease-in-out',
-            }}
-          >
-            <div style={{ position: 'relative', paddingTop: '50px' }}>
-              <button
-                className="reset-button is-clickable"
-                style={{
-                  position: 'absolute',
-                  top: '0',
-                  right: '0',
-                }}
-                onClick={() => toggleIsActive(false)}
-              >
-                <FontAwesomeIcon icon={faArrowRight} size="2x" />
-              </button>
+          <div className="box auth-menu">
+            <ButtonIcon
+              icon={faArrowRight}
+              size={ButtonIconSize.Large}
+              onClick={() => toggleIsActive(false)}
+              isTransparent
+              className="close-button auth"
+            />
 
-              <button onClick={onLogout} className="button is-light">
-                Log out
-              </button>
-            </div>
+            <button onClick={onLogout} className="button is-light">
+              Log out
+            </button>
           </div>
         )
       ) : null}

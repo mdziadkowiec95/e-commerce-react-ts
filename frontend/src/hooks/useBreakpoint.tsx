@@ -4,6 +4,7 @@ import { useEventListener } from './useEventListener';
 import { Breakpoint } from 'common/types';
 
 import debounce from 'lodash/debounce';
+import { useIsMounted } from 'hooks';
 
 interface UseBreakpointsState {
   isMobile: boolean;
@@ -38,9 +39,11 @@ export const useBreakpoint = (debounceTime = 500): UseBreakpointsState => {
     getCurrentBreakpoints()
   );
 
+  const isMounted = useIsMounted();
+
   const handler = useCallback(
     debounce(() => {
-      setBreakpoints(getCurrentBreakpoints());
+      if (isMounted.current) setBreakpoints(getCurrentBreakpoints());
     }, debounceTime),
     [setBreakpoints]
   );

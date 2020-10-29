@@ -1,26 +1,50 @@
-import React, { MouseEvent } from 'react';
-import { Link } from 'react-router-dom';
+import React, { MouseEvent, useCallback } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import cn from 'classnames';
-import { UICategoriesState } from 'redux/UI/UI.reducer';
+import { ActiveMenus, UICategoriesState } from 'redux/UI/UI.reducer';
 import { NavCategory } from 'common/types';
 import UserMenu from 'components/UserMenu/UserMenu';
 import { User } from 'common/types/user';
-import { useToggle } from 'hooks';
+import { useBreakpoint, useClickOutside } from 'hooks';
 import MiniCartContainer from 'containers/MiniCartContainer';
 import NavCategoryDropdown from './NavCategoryDropdown';
+import styles from './Navbar.module.scss';
+import { MiniCartButton } from 'components/MiniCart/MiniCart';
 
 interface Props {
   categories: UICategoriesState;
+  activeMenus: ActiveMenus;
   user: {
     isAuth: boolean;
     isLoading: boolean;
     user: User | null;
   };
+  cart: {
+    productsTotalCount: number;
+  };
   logoutUser: () => Promise<void> | void;
+  toggleNavMenu: (isOpen: boolean) => void;
+  toggleUserMenu: (isOpen: boolean) => void;
 }
 
-const Navbar = ({ categories, user, logoutUser }: Props) => {
-  const [isOpen, setIsOpen] = useToggle();
+const Navbar = ({
+  categories,
+  activeMenus,
+  toggleNavMenu,
+  toggleUserMenu,
+  user,
+  logoutUser,
+  cart,
+}: Props) => {
+  const history = useHistory();
+  const { isMinScreen } = useBreakpoint(300);
+
+  const close = useCallback(() => {
+    if (activeMenus.nav) toggleNavMenu(false);
+  }, [activeMenus.nav, toggleNavMenu]);
+
+  const containerRef = useClickOutside<HTMLElement>(close);
+
   const renderNavCategories = (categoriesState: UICategoriesState) => {
     const navCategories = categoriesState.data;
 
@@ -33,7 +57,12 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
   };
 
   return (
-    <nav className="navbar" role="navigation" aria-label="main navigation">
+    <nav
+      ref={containerRef}
+      className={cn('navbar', styles.nav)}
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div className="navbar-brand">
         <Link className="navbar-item" to="/">
           <img
@@ -44,15 +73,41 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
           />
         </Link>
 
+        {!isMinScreen.isDesktop && (
+          <>
+            <div className={cn('navbar-item', styles.cartMobileIcon)}>
+              <MiniCartButton
+                onClick={() => {
+                  history.push('/cart');
+                }}
+                productsTotalCount={cart.productsTotalCount}
+                id="CartButtonIconMobile"
+              />
+            </div>
+            <div className="navbar-item px-0">
+              <UserMenu
+                isActive={activeMenus.user}
+                toggleIsActive={toggleUserMenu}
+                isAuth={user.isAuth}
+                isLoading={user.isLoading}
+                user={user.user}
+                onLogout={logoutUser}
+              />
+            </div>
+          </>
+        )}
+
         <Link
           role="button"
-          className={cn('navbar-burger burger', { 'is-active': isOpen })}
+          className={cn('navbar-burger', 'burger', {
+            'is-active': activeMenus.nav,
+          })}
           aria-label="menu"
           aria-expanded="false"
           data-target="navbarBasicExample"
           onClick={(e: MouseEvent<HTMLAnchorElement>) => {
             e.preventDefault();
-            setIsOpen(!isOpen);
+            toggleNavMenu(!activeMenus.nav);
           }}
           to="/"
         >
@@ -63,8 +118,8 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
       </div>
 
       <div
-        id="navbarBasicExample"
-        className={cn('navbar-menu', { 'is-active': isOpen })}
+        id="navbar"
+        className={cn('navbar-menu', { 'is-active': activeMenus.nav })}
       >
         <div className="navbar-start">
           <Link to="/" className="navbar-item">
@@ -76,13 +131,17 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <MiniCartContainer />
-              <UserMenu
-                isAuth={user.isAuth}
-                isLoading={user.isLoading}
-                user={user.user}
-                onLogout={logoutUser}
-              />
+              {isMinScreen.isDesktop && <MiniCartContainer />}
+              {isMinScreen.isDesktop && (
+                <UserMenu
+                  isActive={activeMenus.user}
+                  toggleIsActive={toggleUserMenu}
+                  isAuth={user.isAuth}
+                  isLoading={user.isLoading}
+                  user={user.user}
+                  onLogout={logoutUser}
+                />
+              )}
             </div>
           </div>
         </div>

@@ -1,0 +1,11 @@
+@import 'scss/utils/all';
+
+.nav {
+  .cartMobileIcon {
+    margin-left: auto;
+
+    @include desktop() {
+      display: none;
+    }
+  }
+}

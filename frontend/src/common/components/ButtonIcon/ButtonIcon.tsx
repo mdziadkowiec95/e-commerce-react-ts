@@ -72,7 +72,9 @@ const ButtonIcon: FC<ButtonIconProps> = ({
       className={ButtonClassName}
       aria-haspopup={ariaHasPopup}
       aria-controls={ariaControls}
-      onClick={onClick}
+      onClick={(e) => {
+        if (onClick) onClick(e);
+      }}
     >
       {children && <span>{children}</span>}
       <span className="icon">

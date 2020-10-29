@@ -1,5 +1,5 @@
 import React, { MouseEvent, useEffect, useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import cx from 'classnames/bind';
 import { faShoppingCart, faTrash } from '@fortawesome/free-solid-svg-icons';
 
@@ -14,7 +14,6 @@ import ButtonIcon, {
 } from 'common/components/ButtonIcon/ButtonIcon';
 
 import styles from './MiniCart.module.scss';
-import { useBreakpoint } from 'hooks';
 
 const cn = cx.bind(styles);
 
@@ -24,17 +23,17 @@ interface ButtonProps {
   id: string;
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
   productsTotalCount: number;
+  className?: string;
 }
 
 export const MiniCartButton = ({
   id,
   onClick,
   productsTotalCount,
+  className,
 }: ButtonProps) => {
-  const history = useHistory();
   const [prevCount, setPrevCount] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const { isMinScreen } = useBreakpoint();
 
   useEffect(() => {
     if (productsTotalCount !== prevCount) {
@@ -63,11 +62,9 @@ export const MiniCartButton = ({
         ariaControls={id}
         ariaHasPopup
         onClick={(e) => {
-          if (!isMinScreen.isDesktop) {
-            history.push('/cart');
-          }
           onClick(e);
         }}
+        className={className}
       >
         {productsTotalCount !== 0 && (
           <div

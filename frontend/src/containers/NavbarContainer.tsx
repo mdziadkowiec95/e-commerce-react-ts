@@ -2,13 +2,17 @@ import { connect } from 'react-redux';
 import Navbar from '../components/Navbar/Navbar';
 import { RootState } from '../redux/rootReducer';
 import * as UserThunks from '../redux/User/user.thunks';
+import * as fromCart from 'redux/Cart/cart.selectors';
 
-const mapStateToProps = ({ UI, user }: RootState) => ({
-  categories: UI.categories,
+const mapStateToProps = (state: RootState) => ({
+  categories: state.UI.categories,
   user: {
-    isAuth: user.isAuth,
-    isLoading: user.isLoading,
-    user: user.user,
+    isAuth: state.user.isAuth,
+    isLoading: state.user.isLoading,
+    user: state.user.user,
+  },
+  cart: {
+    productsTotalCount: fromCart.getProductsTotalQuantity(state),
   },
 });
 

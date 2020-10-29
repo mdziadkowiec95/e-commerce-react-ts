@@ -1,13 +1,15 @@
 import React, { MouseEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import cn from 'classnames';
 import { UICategoriesState } from 'redux/UI/UI.reducer';
 import { NavCategory } from 'common/types';
 import UserMenu from 'components/UserMenu/UserMenu';
 import { User } from 'common/types/user';
-import { useToggle } from 'hooks';
+import { useBreakpoint, useToggle } from 'hooks';
 import MiniCartContainer from 'containers/MiniCartContainer';
 import NavCategoryDropdown from './NavCategoryDropdown';
+import styles from './Navbar.module.scss';
+import { MiniCartButton } from 'components/MiniCart/MiniCart';
 
 interface Props {
   categories: UICategoriesState;
@@ -16,11 +18,17 @@ interface Props {
     isLoading: boolean;
     user: User | null;
   };
+  cart: {
+    productsTotalCount: number;
+  };
   logoutUser: () => Promise<void> | void;
 }
 
-const Navbar = ({ categories, user, logoutUser }: Props) => {
+const Navbar = ({ categories, user, logoutUser, cart }: Props) => {
   const [isOpen, setIsOpen] = useToggle();
+  const history = useHistory();
+  const { isMinScreen } = useBreakpoint();
+
   const renderNavCategories = (categoriesState: UICategoriesState) => {
     const navCategories = categoriesState.data;
 
@@ -33,7 +41,11 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
   };
 
   return (
-    <nav className="navbar" role="navigation" aria-label="main navigation">
+    <nav
+      className={cn('navbar', styles.nav)}
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div className="navbar-brand">
         <Link className="navbar-item" to="/">
           <img
@@ -44,9 +56,23 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
           />
         </Link>
 
+        {!isMinScreen.isDesktop && (
+          <div className={cn('navbar-item', styles.cartMobileIcon)}>
+            <MiniCartButton
+              onClick={() => {
+                history.push('/cart');
+              }}
+              productsTotalCount={cart.productsTotalCount}
+              id="CartButtonIconMobile"
+            />
+          </div>
+        )}
+
         <Link
           role="button"
-          className={cn('navbar-burger burger', { 'is-active': isOpen })}
+          className={cn('navbar-burger', 'burger', {
+            'is-active': isOpen,
+          })}
           aria-label="menu"
           aria-expanded="false"
           data-target="navbarBasicExample"
@@ -62,10 +88,7 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
         </Link>
       </div>
 
-      <div
-        id="navbarBasicExample"
-        className={cn('navbar-menu', { 'is-active': isOpen })}
-      >
+      <div id="navbar" className={cn('navbar-menu', { 'is-active': isOpen })}>
         <div className="navbar-start">
           <Link to="/" className="navbar-item">
             Home
@@ -76,7 +99,7 @@ const Navbar = ({ categories, user, logoutUser }: Props) => {
         <div className="navbar-end">
           <div className="navbar-item">
             <div className="buttons">
-              <MiniCartContainer />
+              {isMinScreen.isDesktop && <MiniCartContainer />}
               <UserMenu
                 isAuth={user.isAuth}
                 isLoading={user.isLoading}

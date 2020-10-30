@@ -1,3 +1,6 @@
+@import 'scss/utils/all';
+@import '~bulma/sass/utilities/_all.sass';
+
 // // Colors
 
 // $primary: ;
@@ -28,6 +31,9 @@
 // // Typography
 
 // $family-sans-serif: BlinkMacSystemFont, -apple-system, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", "Helvetica", "Arial", sans-serif !default
+$family-sans-serif: 'Montserrat', BlinkMacSystemFont, -apple-system, 'Segoe UI',
+  'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+  'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
 // $family-monospace: monospace !default
 // $render-mode: optimizeLegibility !default
 
@@ -41,7 +47,7 @@
 
 // $weight-light: 300 !default
 // $weight-normal: 400 !default
-// $weight-medium: 500 !default
+$weight-medium: 600 !default;
 // $weight-semibold: 600 !default
 // $weight-bold: 700 !default
 
@@ -77,3 +83,14 @@
 
 // $variable-columns: true !default
 // $rtl: false !default
+
+// $navbar-background-color: red;
+
+// Navbar
+$navbar-box-shadow-size: 0 0 10px;
+$navbar-box-shadow-color: rgba(#000, 0.2);
+$navbar-dropdown-arrow: #aaa;
+$navbar-dropdown-radius: 10px;
+
+// Card
+$card-radius: getRadius(medium);

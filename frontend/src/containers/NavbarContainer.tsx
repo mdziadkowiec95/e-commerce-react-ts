@@ -6,8 +6,13 @@ import * as UserThunks from 'redux/User/user.thunks';
 import * as fromCart from 'redux/Cart/cart.selectors';
 import { ActiveMenu, UIActions } from 'redux/UI/UI.reducer';
 import { useAppDispatch } from 'redux/store';
+import { RouterView } from 'common/types';
 
-const NavbarContainer = () => {
+interface Props {
+  view: RouterView;
+}
+
+const NavbarContainer = ({ view }: Props) => {
   const dispatch = useAppDispatch();
   const state = useSelector(
     (state: RootState) => ({
@@ -45,6 +50,7 @@ const NavbarContainer = () => {
       activeMenus={activeMenus}
       user={user}
       cart={cart}
+      isCartView={view === RouterView.Cart}
       logoutUser={handleUserLogout}
       toggleNavMenu={handleToggleNavMenu}
       toggleUserMenu={handleToggleUserMenu}

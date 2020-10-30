@@ -6,6 +6,13 @@ $easings: (
 $font-weights: (
   thin: 300,
   normal: 400,
-  medium: 500,
+  semi-bold: 600,
   bold: 700,
+);
+
+$border-radius: (
+  small: 0.5rem,
+  normal: 1rem,
+  medium: 1.5rem,
+  large: 2rem,
 );

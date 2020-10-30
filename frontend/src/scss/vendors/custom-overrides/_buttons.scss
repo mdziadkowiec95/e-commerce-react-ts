@@ -1,5 +1,7 @@
+@import 'scss/utils/all';
+
 .button {
-  font-weight: 500;
+  font-weight: getFontWeight(semi-bold);
 }
 
 .reset-button {

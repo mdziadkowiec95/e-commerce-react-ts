@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router';
-import ProductsContainer from '../../containers/ProductsContainer';
+import ProductsContainer from 'containers/ProductsContainer';
 
 interface RouteParams {
   rootCategory: string;

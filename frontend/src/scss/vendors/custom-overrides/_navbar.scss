@@ -1,9 +1,22 @@
 .navbar-item {
   &.has-dropdown {
     .navbar-dropdown {
+      padding: 0;
       overflow: hidden;
       visibility: hidden;
-      transition: height 0.4s;
+      transition: height 0.25s;
+
+      .navbar-divider {
+        margin: 0;
+      }
+
+      .navbar-item {
+        padding: 0.575rem 1rem;
+
+        &:last-child {
+          padding-bottom: 1em;
+        }
+      }
     }
 
     &.is-active {
@@ -13,6 +26,18 @@
       }
     }
   }
+}
+
+.navbar-brand {
+  .navbar-item.brand-icon {
+    margin-right: auto;
+  }
+}
+
+.navbar-link,
+.navbar-item {
+  text-transform: uppercase;
+  font-weight: getFontWeight(semi-bold);
 }
 
 .navbar-burger {

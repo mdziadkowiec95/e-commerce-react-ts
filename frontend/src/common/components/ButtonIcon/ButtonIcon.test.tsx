@@ -1,9 +1,10 @@
-import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
-import { fireEvent, render, wait } from '@testing-library/react';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ButtonIcon from '.';
-import { Colors } from '../../common/types/bulma';
+import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { fireEvent, render, wait } from '@testing-library/react';
+import ButtonIcon from './ButtonIcon';
+
+import { Colors } from '../../types/bulma';
 
 describe('<ButtonIcon />', () => {
   test('should render without crashing', () => {

@@ -1,0 +1,18 @@
+$easings: (
+  fadeIn: cubic-bezier(0.85, 0, 0.15, 1),
+  movement: cubic-bezier(0.85, 0, 0.15, 1),
+);
+
+$font-weights: (
+  thin: 300,
+  normal: 400,
+  semi-bold: 600,
+  bold: 700,
+);
+
+$border-radius: (
+  small: 0.5rem,
+  normal: 1rem,
+  medium: 1.5rem,
+  large: 2rem,
+);

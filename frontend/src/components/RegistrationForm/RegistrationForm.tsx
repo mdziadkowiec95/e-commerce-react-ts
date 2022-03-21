@@ -2,7 +2,9 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { faEnvelope, faLock, faUser } from '@fortawesome/free-solid-svg-icons';
-import TextField, { TextFieldType } from '../TextField';
+import TextField, {
+  TextFieldType,
+} from 'common/components/TextField/TextField';
 
 const RegistrationFormSchema = Yup.object().shape({
   firstName: Yup.string()

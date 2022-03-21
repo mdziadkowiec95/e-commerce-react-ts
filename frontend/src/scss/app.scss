@@ -1,14 +1,4 @@
-@import './abstracts/variables';
-@import './abstracts/functions';
-@import './abstracts/mixins';
-
 @import './vendors/bulma';
-
-.reset-button {
-  background: transparent;
-  border: none;
-  outline: none;
-}
 
 button,
 .button {

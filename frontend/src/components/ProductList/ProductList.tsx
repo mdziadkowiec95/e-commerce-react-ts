@@ -1,6 +1,6 @@
 import React from 'react';
-import { Product } from '../../common/types/product';
-import ProductCard from '../ProductCard';
+import { Product } from 'common/types';
+import ProductCardContainer from 'containers/ProductCardContainer';
 
 interface Props {
   products: Product[];
@@ -19,7 +19,7 @@ const ProductList = ({ products }: Props) => {
           key={product.id}
           className="column is-half-tablet is-one-third-widescreen is-one-quarter-fullhd"
         >
-          <ProductCard data={product} />
+          <ProductCardContainer product={product} />
         </div>
       ))}
     </div>

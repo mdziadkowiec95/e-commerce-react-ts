@@ -1,0 +1,19 @@
+@function getFromMap($map, $key, $map-name) {
+  @if (map-has-key($map, $key)) {
+    @return map-get($map, $key);
+  } @else {
+    @error 'Key "' + $key + '" does NOT exist in the "' +  $map-name + '" map!';
+  }
+}
+
+@function getEasing($easing) {
+  @return getFromMap($easings, $easing, 'easings');
+}
+
+@function getFontWeight($weight) {
+  @return getFromMap($font-weights, $weight, 'font-weights');
+}
+
+@function getRadius($size) {
+  @return getFromMap($border-radius, $size, 'border-radius');
+}

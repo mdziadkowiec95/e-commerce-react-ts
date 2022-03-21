@@ -1,0 +1,10 @@
+@import 'scss/utils/all';
+
+.dropdown {
+  &.is-active,
+  &.is-hoverable:hover {
+    .dropdown-menu {
+      animation: fadeIn 0.3s getEasing(fadeIn) backwards;
+    }
+  }
+}

@@ -2,6 +2,7 @@
 
 // Import a Google Font
 @import url('https://fonts.googleapis.com/css?family=Nunito:400,700');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
 
 // // Set your brand colors
 // $purple: #8a4d76;
@@ -25,6 +26,8 @@
 // $input-border-color: transparent;
 // $input-shadow: none;
 
+@import './custom-overrides/variables';
+
 // Import only what you need from Bulma
 @import '~bulma/sass/utilities/_all.sass';
 @import '~bulma/sass/base/_all.sass';
@@ -39,3 +42,9 @@
 @import '~bulma/sass/components/navbar.sass';
 @import '~bulma/sass/components/dropdown.sass';
 @import '~bulma/sass/components/card.sass';
+@import '~bulma/sass/components/media.sass';
+
+// Bulma custom overrides
+@import './custom-overrides/buttons';
+@import './custom-overrides/navbar';
+@import './custom-overrides/dropdowns';

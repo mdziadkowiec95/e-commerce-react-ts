@@ -1,11 +1,12 @@
-import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
-import { Product } from '../../common/types/product';
-import ButtonIcon from '../ButtonIcon';
+import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import { Product } from 'common/types/product';
+import ButtonIcon from 'common/components/ButtonIcon/ButtonIcon';
 import styles from './ProductCard.module.scss';
 
 interface Props {
-  data: Product;
+  product: Product;
+  onAddToCart: (product: Product) => void;
 }
 
 export const getProductMainImageSrc = (product: Product) => {
@@ -17,22 +18,22 @@ export const getProductMainImageAlt = (product: Product) => {
   return product?.image?.[0]?.fields?.title;
 };
 
-const ProductCard = ({ data }: Props) => {
+const ProductCard = ({ product, onAddToCart }: Props) => {
   return (
     <div className={`card ${styles.wrap}`}>
       <div className="card-image">
         <figure className="image is-4by3">
           <img
-            src={getProductMainImageSrc(data)}
-            alt={getProductMainImageAlt(data)}
+            src={getProductMainImageSrc(product)}
+            alt={getProductMainImageAlt(product)}
           />
         </figure>
       </div>
       <div className="card-content">
         <div className="media">
           <div className="media-content">
-            <p className="title is-4">{data.productName}</p>
-            <p className="subtitle is-6">{data.price}$</p>
+            <p className="title is-4">{product.productName}</p>
+            <p className="subtitle is-6">{product.price}$</p>
           </div>
         </div>
 
@@ -41,7 +42,7 @@ const ProductCard = ({ data }: Props) => {
             isFullwidth
             icon={faCartPlus}
             onClick={() => {
-              console.log(data.id);
+              onAddToCart(product);
             }}
           >
             Add to cart

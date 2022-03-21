@@ -2,7 +2,9 @@ import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
-import TextField, { TextFieldType } from '../TextField';
+import TextField, {
+  TextFieldType,
+} from 'common/components/TextField/TextField';
 import styles from './SignInForm.module.scss';
 
 export interface SignInFormValues {

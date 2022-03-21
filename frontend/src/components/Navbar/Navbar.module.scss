@@ -1,0 +1,12 @@
+@import 'scss/utils/all';
+@import '~bulma/sass/utilities/_all.sass';
+
+.nav {
+  .cartMobileIcon {
+    margin-left: auto;
+
+    @include desktop() {
+      display: none;
+    }
+  }
+}

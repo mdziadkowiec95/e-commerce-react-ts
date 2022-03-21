@@ -1,0 +1,17 @@
+@import 'scss/utils/all';
+
+.button {
+  font-weight: getFontWeight(semi-bold);
+}
+
+.reset-button {
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.no-margin-icon {
+  .icon:last-child:not(:first-child) {
+    margin: 0;
+  }
+}

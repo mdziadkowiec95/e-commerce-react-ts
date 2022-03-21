@@ -1,32 +1,37 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Product, ProductsCollectionMap } from 'common/types/product';
+import { createSlice } from '@reduxjs/toolkit';
+import { Product } from 'common/types/product';
+import { fetchProducts } from './products.thunks';
+import { ContentfulError } from 'common/types';
 
 export interface ProductsState {
   isLoading: boolean;
   items: Product[];
+  error: ContentfulError | null;
 }
 
-const initialState = {
+const initialState: ProductsState = {
   isLoading: false,
   items: [],
+  error: null
 };
-
 
 const productsSlice = createSlice({
   name: 'Products',
   initialState,
-  reducers: {
-    fetchProductsBegin: (state: ProductsState) => {
-      state.isLoading = true;
-    },
-    fetchProductsSuccess: (state: ProductsState, { payload }: PayloadAction<ProductsCollectionMap>) => {
-      console.log(payload);
-      state.items = payload.items;
-      state.isLoading = true;
-    },
-    fetchProductsError: (state: ProductsState) => {
-      state.isLoading = false;
-    },
+  reducers: {},
+  extraReducers: builder => {
+    builder
+      .addCase(fetchProducts.pending,  (state) => {
+        state.isLoading = true;
+      })
+      .addCase(fetchProducts.fulfilled,  (state, { payload }) => {
+        state.items = payload.items;
+        state.isLoading = false;
+      })
+      .addCase(fetchProducts.rejected,  (state, { payload = null }) => {
+        state.isLoading = false;
+        state.error = payload;
+      })
   }
 });
 

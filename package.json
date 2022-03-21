@@ -41,8 +41,6 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm test --prefix frontend",
-      "pre-push": "npm test --prefix frontend"
     }
   }
 }

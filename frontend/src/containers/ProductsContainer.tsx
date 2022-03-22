@@ -15,8 +15,12 @@ const ProductsContainer = ({ rootCategory, subCategory }: Props) => {
   const productsState = useSelector((state: RootState) => state.products);
 
   useEffect(() => {
-    dispatch(ProductsThunks.fetchProducts(rootCategory, subCategory));
-  }, [dispatch, rootCategory, subCategory]);
+    const fetchProducts = async () => {
+      await dispatch(ProductsThunks.fetchProducts({ parentCategory: rootCategory, subCategory }));
+    };
+
+    fetchProducts();
+  }, [rootCategory, subCategory]);
   return <ProductList products={productsState.items} />;
 };
 

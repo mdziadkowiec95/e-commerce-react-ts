@@ -1,17 +1,37 @@
 import ContentfulService from 'services/ContentfulService';
-import { AppThunk } from 'redux/store';
-import { ProductsActions } from './products.reducer';
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import { ContentfulError, ContentfulErrorResponse, ProductsCollectionMap } from 'common/types';
 
-export const fetchProducts = (parentCategory?: string, subCategory?: string): AppThunk => async dispatch => {
-  try {
-    dispatch(ProductsActions.fetchProductsBegin());
+export const fetchProducts = createAsyncThunk<ProductsCollectionMap, {
+  parentCategory?: string;
+  subCategory?: string;
+},
+{
+  rejectValue: ContentfulError
+}>(
+  'products/fetchProducts',
+  async ({
+    parentCategory,
+    subCategory
+  }, { rejectWithValue }) => {
+    try {
+      const products = await ContentfulService.getProducts(parentCategory, subCategory);
 
-    const products = await ContentfulService.getProducts(parentCategory, subCategory);
+      return products;
+    } catch (error) {
+      // @TODO -> Create some global function to handle commno response format
+      const err = error as ContentfulErrorResponse;
 
-    dispatch(ProductsActions.fetchProductsSuccess(products));
-  } catch (error) {
+      if (!err.details) {
+        return rejectWithValue({
+          name: 'Unexpected error',
+          value: err.message ? err.message : err as any
+        })
+      }
 
-    console.error(error);
-    dispatch(ProductsActions.fetchProductsError());
+      const errorData = err.details.errors[0];
+
+      return rejectWithValue(errorData);
+    }
   }
-};
+)
